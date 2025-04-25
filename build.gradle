@@ -148,23 +148,6 @@ task copyEditableConfigFile(type: Copy) {
     into "${buildDir}/libs"
 }
 
-// copy editable config files to jpackage directory
-task copyEditableConfigFileToJpackage(type: Copy) {
-    dependsOn("jpackage")
-
-    doFirst {
-        println "\n\ncopyEditableConfigFileToJpackage begin: "
-        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
-    }
-
-    doLast {
-        println "\n\ncopyEditableConfigFileToJpackage end: "
-        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
-    }
-    from('src/main/resources/editable')
-    into "$buildDir/$distributionDir/${archiveBaseName}"
-}
-
 // copy script files
 task copyScriptFiles(type: Copy) {
     from('src/main/resources')
@@ -234,9 +217,27 @@ task showJpackageResult() {
     }
 }
 
+// copy editable config files to jpackage directory
+task copyEditableConfigsToJpackage(type: Copy) {
+    dependsOn("jpackage")
+
+    doFirst {
+        println "\n\ncopyEditableConfigFileToJpackage begin: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
+
+    doLast {
+        println "\n\ncopyEditableConfigFileToJpackage end: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
+    from('src/main/resources/editable')
+    into "$buildDir/$distributionDir/${archiveBaseName}"
+}
+
+
 task packageJpackageZipArchive(type: Zip) {
     //dependsOn("jpackage")
-    dependsOn("showJpackageResult")
+    dependsOn("copyEditableConfigsToJpackage")
 
     doFirst {
         println "\n\npackageJpackageZipArchive begin: "
