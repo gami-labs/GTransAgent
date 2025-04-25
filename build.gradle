@@ -156,6 +156,7 @@ task copyEditableConfigFileToJpackage(type: Copy) {
         println "\n\ncopyEditableConfigFileToJpackage begin: "
         println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
     }
+
     doLast {
         println "\n\ncopyEditableConfigFileToJpackage end: "
         println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
@@ -220,12 +221,12 @@ tasks.jpackage {
 }
 
 task packageJpackageZipArchive(type: Zip) {
-    //dependsOn("jpackage")
-    dependsOn("copyEditableConfigFileToJpackage")
+    dependsOn("jpackage")
+    //dependsOn("copyEditableConfigFileToJpackage")
 
     doFirst {
         println "\n\npackageJpackageZipArchive begin: "
-        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/GTransAgent").collect()
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
     }
 
     var osArch = getOsArch()
