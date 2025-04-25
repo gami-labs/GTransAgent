@@ -44,8 +44,8 @@ jobs:
         id: get_version
         run: |
           echo VERSION: ${{ steps.read_internal_config.outputs['agentVersionName'] }}
-#          echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
           echo "VERSION=${{ steps.read_internal_config.outputs['agentVersionName'] }}" >> $GITHUB_OUTPUT
+      #          echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
       #      - name: Get version
       #        id: get_version
       #        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -61,6 +61,7 @@ jobs:
         run: ./gradlew clean -x test packageJpackageZipArchive
 
       - name: Check version
+        if: ${{ matrix.os == 'windows-latest' }}
         run: |
           echo "VERSION=${{ steps.get_version.outputs.VERSION }}"
           echo "dir releases"
