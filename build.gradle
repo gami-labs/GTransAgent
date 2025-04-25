@@ -179,7 +179,7 @@ task copyScriptFiles(type: Copy) {
 // jpackage --type app-image --name GTransAgent --input libs --main-jar GTransAgent-1.0.jar --win-console --dest distributions
 tasks.jpackage {
     dependsOn("fatJar")
-    finalizedBy("copyEditableConfigFileToJpackage")
+    //finalizedBy("copyEditableConfigFileToJpackage")
 
     doFirst {
         println "\n\njpackage begin: "
@@ -198,7 +198,7 @@ tasks.jpackage {
     mainJar = "${archiveBaseName}-${version}.jar"
     mainClassName = "${mainClassName}"
 
-    removeDestination = true
+    //removeDestination = true
     javaOptions = ["-Dfile.encoding=UTF-8", "-Xms256m",
                    "-Xmx1024m"]
 
