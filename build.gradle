@@ -175,6 +175,11 @@ tasks.jpackage {
     dependsOn("fatJar")
     finalizedBy("copyEditableConfigFileToJpackage")
 
+    doFirst {
+        println "\n\njpackage begin: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/libs").collect()
+    }
+
     input = "$buildDir/libs"
     destination = "$buildDir/$distributionDir"
 
@@ -199,11 +204,21 @@ tasks.jpackage {
     mac {
         icon = "icons/icon.icns"
     }
+
+    doLast {
+        println "\n\njpackage end: "
+        println fileTree(include: ['**/*'], dir: "$destination/GTransAgent").collect()
+    }
 }
 
 task packageJpackageZipArchive(type: Zip) {
     dependsOn("jpackage")
     dependsOn("copyEditableConfigFileToJpackage")
+
+    doFirst {
+        println "\n\npackageJpackageZipArchive begin: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/GTransAgent").collect()
+    }
 
     var osArch = getOsArch()
     archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
