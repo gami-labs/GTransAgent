@@ -13,7 +13,7 @@ jobs:
     strategy:
       matrix:
 #        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest]
-        os: [windows-latest]
+        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     permissions:
@@ -56,10 +56,10 @@ jobs:
         shell: bash
         run: chmod +x ./gradlew
 
-      - name: "Build Jar Archive with Gradle"
-        if: ${{ matrix.os == 'ubuntu-latest' }}
-        shell: bash
-        run: ./gradlew clean -x test packageJarZipArchive
+#      - name: "Build Jar Archive with Gradle"
+#        if: ${{ matrix.os == 'ubuntu-latest' }}
+#        shell: bash
+#        run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
         shell: bash
