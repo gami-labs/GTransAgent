@@ -44,7 +44,8 @@ jobs:
         id: get_version
         run: |
           echo VERSION: ${{ steps.read_internal_config.outputs['agentVersionName'] }}
-          echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
+#          echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
+          echo "VERSION=${{ steps.read_internal_config.outputs['agentVersionName'] }}" >> $GITHUB_OUTPUT
       #      - name: Get version
       #        id: get_version
       #        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
@@ -57,7 +58,12 @@ jobs:
         run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
-        run: ./gradlew --debug clean -x test packageJpackageZipArchive
+        run: ./gradlew clean -x test packageJpackageZipArchive
+
+      - name: Check version
+        run: |
+          echo "VERSION=${{ steps.get_version.outputs.VERSION }}"
+          echo "dir releases"
 
       - name: Release
         uses: softprops/action-gh-release@v2
