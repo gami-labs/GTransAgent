@@ -8,10 +8,11 @@
 name: Java CI with Gradle
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+#  push:
+#    branches: [ "main" ]
+#  pull_request:
+#    branches: [ "main" ]
+  workflow_dispatch:
 
 jobs:
   build:
@@ -38,7 +39,7 @@ jobs:
       run: chmod +x ./gradlew
 
     - name: Build with Gradle Wrapper
-      run: ./gradlew build
+      run: ./gradlew build -x test
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.

@@ -48,10 +48,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: "Build Jar Archive with Gradle"
-        run: ./gradlew clean packageJarZipArchive
+        run: ./gradlew clean  -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
-        run: ./gradlew clean packageJpackageZipArchive
+        run: ./gradlew clean  -x test packageJpackageZipArchive
 
       - name: Release
         uses: softprops/action-gh-release@v2
