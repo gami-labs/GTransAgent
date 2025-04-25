@@ -4,8 +4,8 @@ on:
   #  push:
   #    tags:
   #      - 'v*'
-  push:
-    branches: [ "main" ]
+#  push:
+#    branches: [ "main" ]
   workflow_dispatch:
 
 jobs:
@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     permissions:
-      contents: read
+      contents: write
 
     steps:
       - uses: actions/checkout@v4
@@ -28,6 +28,11 @@ jobs:
           distribution: 'oracle'
           java-package: jdk
           cache: 'gradle'
+
+      # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
+      # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
 
       - name: read-yaml-file
         uses: pietrobolcato/action-read-yaml@1.0.0
