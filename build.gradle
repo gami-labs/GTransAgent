@@ -214,6 +214,13 @@ tasks.jpackage {
     doLast {
         println "\n\njpackage end: "
         println fileTree(include: ['**/*'], dir: "$destination/GTransAgent").collect()
+
+        doLast {
+            println "\n\ncopyEditableConfigFileToJpackage end: "
+            println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+        }
+        from('src/main/resources/editable')
+        into "$buildDir/$distributionDir/${archiveBaseName}"
     }
 }
 
