@@ -209,8 +209,6 @@ task packageJpackageZipArchive(type: Zip) {
     archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
     destinationDirectory = file("${rootProject}/../releases/")
 
-    println("archiveFileName: " + archiveFileName+", destinationDirectory: " + destinationDirectory)
-
     from("$buildDir/$distributionDir/${archiveBaseName}") {
     }
 }
@@ -223,21 +221,20 @@ task packageJarZipArchive(type: Zip) {
     archiveFileName = "${archiveBaseName}-bin-${version}-jar.zip"
     destinationDirectory = file("${rootProject}/../releases/")
 
-    println("archiveFileName: " + archiveFileName+", destinationDirectory: " + destinationDirectory)
     from("$buildDir/libs") {
     }
 }
 
 def getOsArch() {
     def arch = DefaultNativePlatform.currentArchitecture
-    println("arch: " + arch)
+    def name = (DefaultNativePlatform.currentOperatingSystem.name + "-" + arch.name.toLowerCase())
     if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
-        return ("win-" + arch.name.toLowerCase());
+        name = ("win-" + arch.name.toLowerCase())
     } else if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
-        return ("mac-" + arch.name.toLowerCase());
+        name = ("mac-" + arch.name.toLowerCase())
     } else if (org.gradle.internal.os.OperatingSystem.current().isLinux()) {
-        return ("linux-" + arch.name.toLowerCase());
-    } else {
-        return (DefaultNativePlatform.currentOperatingSystem + "-" + arch.name.toLowerCase());
+        name = ("linux-" + arch.name.toLowerCase())
     }
+    println("arch: " + arch + ", name: " + name)
+    return name
 }

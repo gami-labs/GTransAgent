@@ -57,7 +57,7 @@ jobs:
         run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
-        run: ./gradlew clean -x test packageJpackageZipArchive
+        run: ./gradlew --debug clean -x test packageJpackageZipArchive
 
       - name: Release
         uses: softprops/action-gh-release@v2
