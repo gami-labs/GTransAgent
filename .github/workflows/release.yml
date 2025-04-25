@@ -16,7 +16,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     permissions:
-      contents: write
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
@@ -48,10 +48,10 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: "Build Jar Archive with Gradle"
-        run: ./gradlew clean  -x test packageJarZipArchive
+        run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
-        run: ./gradlew clean  -x test packageJpackageZipArchive
+        run: ./gradlew clean -x test packageJpackageZipArchive
 
       - name: Release
         uses: softprops/action-gh-release@v2
