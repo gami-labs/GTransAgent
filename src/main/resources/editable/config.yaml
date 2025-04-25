@@ -1,0 +1,57 @@
+port: 6028 # port to bind the server
+# add all enabled translators here
+enablesTranslators:
+  # translatorCode for the translator, must match the translatorCode in translatorDefines
+  # eg. Google, Ollama
+  - Ollama
+  - Google
+  - Microsoft
+
+# add all the engines you want to support here
+translatorDefines:
+#  - translatorCode: Google # unique code for the translator
+#    classFile: net.gtransagent.translate.GoogleTranslator # class file for the translator
+  - translatorCode: Ollama
+    classFile: net.gtransagent.translator.OllamaTranslator
+  - translatorCode: Google
+    classFile: net.gtransagent.translator.GoogleTranslator
+  - translatorCode: DeepL
+    classFile: net.gtransagent.translator.DeepLTranslator
+  - translatorCode: Microsoft
+    classFile: net.gtransagent.translator.MicrosoftTranslator
+  - translatorCode: DeepLX
+    classFile: net.gtransagent.translator.DeepLXTranslator
+  - translatorCode: OpenAI
+    classFile: net.gtransagent.translator.OpenAITranslator
+  - translatorCode: Anthropic
+    classFile: net.gtransagent.translator.AnthropicTranslator
+  - translatorCode: AliyunBailian
+    classFile: net.gtransagent.translator.AliyunBailianTranslator
+  - translatorCode: BigModel
+    classFile: net.gtransagent.translator.BigModelTranslator
+  - translatorCode: DeepSeek
+    classFile: net.gtransagent.translator.DeepSeekTranslator
+  - translatorCode: Gemini
+    classFile: net.gtransagent.translator.GeminiTranslator
+  - translatorCode: VolcengineArk
+    classFile: net.gtransagent.translator.VolcengineArkTranslator
+  - translatorCode: Mistral
+    classFile: net.gtransagent.translator.MistralTranslator
+  - translatorCode: Yandex
+    classFile: net.gtransagent.translator.YandexTranslator
+  - translatorCode: Youdao
+    classFile: net.gtransagent.translator.YoudaoTranslator
+  - translatorCode: Volcengine
+    classFile: net.gtransagent.translator.VolcengineTranslator
+  - translatorCode: Niutrans
+    classFile: net.gtransagent.translator.NiutransTranslator
+  - translatorCode: Baidu
+    classFile: net.gtransagent.translator.BaiduTranslator
+  - translatorCode: GoogleExperimental # free Experimental translator
+    classFile: net.gtransagent.translator.experimental.GoogleExperimentalTranslator
+  - translatorCode: MicrosoftExperimental # free Experimental translator
+    classFile: net.gtransagent.translator.experimental.MicrosoftExperimentalTranslator
+  - translatorCode: TencentExperimental # free Experimental translator
+    classFile: net.gtransagent.translator.experimental.TencentExperimentalTranslator
+  - translatorCode: YandexExperimental # free Experimental translator
+    classFile: net.gtransagent.translator.experimental.YandexExperimentalTranslator

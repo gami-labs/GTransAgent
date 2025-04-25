@@ -1,0 +1,5 @@
+# Description: Microsoft Public translator configuration
+
+url: https://api-edge.cognitive.microsofttranslator.com/translate
+authUrl: https://edge.microsoft.com/translate/auth
+concurrent: 5  # Number of concurrent requests

@@ -1,0 +1,74 @@
+# This file is used to configure the Volcengine Ark translator
+
+# url is the URL of the Volcengine Ark API
+# https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey
+url: https://ark.cn-beijing.volces.com/api/v3/chat/completions
+# or set VOLCENGINE_ARK_API_KEY in environment.
+apiKey:
+
+# all modes can find in the following link
+# https://console.volcengine.com/ark/
+engineMapping:
+  doubao-1.5-lite: # engineCode
+    name: Doubao-1.5-lite # engineName
+    model: doubao-1-5-lite-32k-250115 # Model ID, API parameters.
+  doubao-1.5-pro: # engineCode
+    name: Doubao-1.5-pro # engineName
+    model: doubao-1-5-pro-32k-250115 # Model ID, API parameters.
+  deepseek-v3-volcengine: # engineCode
+    name: DeepSeek V3 (Volcengine) # engineName
+    model: deepseek-v3-250324 # Model ID, API parameters.
+  moonshot-v1-8k-volcengine: # engineCode
+    name: Moonshot-v1-8k (Volcengine) # engineName
+    model: moonshot-v1-8k # Model ID, API parameters.
+
+# you can add more engines here
+
+
+##
+#
+#    Input Format:
+#    [{"id":1,"text":"Source Text"}]
+#
+#    Output Format:
+#    {"translations":[{"id":1,"text":"Translated Text"}]}
+#
+#    glossaryList format:
+#      {
+#        "test": "检测",
+#        "internet": "互联网"
+#      }
+#
+##
+
+concurrent: 3  # Number of concurrent requests
+systemPrompts: |
+    You are a professional translator proficient in {{srcLang}} and {{targetLang}}. Strictly follow these rules:
+    1. Translate the given text from {{srcLang}} to fluent, natural {{targetLang}}.
+    2. Prioritize exact terminology replacements from the provided vocabulary list (format: "english_term": "chinese_term").
+    3. Term matching is case-{{glossarySensitive}} by default.
+    4. Never add explanations, pinyin, or non-translation content.
+    5. Maintain original formatting (e.g., line breaks, punctuation).
+
+userPrompts: |
+    Translate JSON entries from {{srcLang}} to {{targetLang}}:
+
+    Input Format:
+    [{"id":1,"text":"Source Text"}]
+    
+    Output Format:
+    {"translations":[{"id":1,"text":"Translated Text"}]}
+    
+    Vocabulary (case-{{{glossarySensitive}}}):
+    {{glossaryList}}
+    
+    Instructions:
+    1. Processing sequence:
+      - Phase 1: Fix OCR errors (e.g., 1↔l, 0↔O, missing punctuation)
+      - Phase 2: Translate text while applying vocabulary replacements
+      - Phase 3: Ensure JSON-safe escaping for all outputs
+    2. Preserve numerical values and technical codes unchanged
+    3. Never add explanations or non-requested content
+    
+    BEGIN INPUT:
+    {{original}}

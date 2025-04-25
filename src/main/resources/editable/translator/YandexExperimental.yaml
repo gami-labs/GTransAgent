@@ -1,0 +1,5 @@
+# Description: Yandex Experimental translator configuration
+
+url: https://translate.yandex.net/api/v1/tr.json/translate
+authUrl: https://translate.yandex.net/website-widget/v1/widget.js?widgetId=ytWidget&pageLang=es&widgetTheme=light&autoMode=false
+concurrent: 5  # Number of concurrent requests

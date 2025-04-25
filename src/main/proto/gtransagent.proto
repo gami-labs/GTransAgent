@@ -1,0 +1,93 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option csharp_namespace = "GTransAgent.Grpc";
+
+package net.gtransagent.grpc;
+
+// The GTransAgent service definition.
+service GTransAgentService {
+
+  // Get agent info
+  rpc agentInfo (AgentInfoRequest) returns (AgentInfoResponse);
+
+  // Usability Check
+  rpc usabilityCheck(UsabilityCheckRequest) returns (stream UsabilityCheckResponse);
+
+  // Translate
+  rpc translate (TranslateRequest) returns (stream TranslateResponse);
+}
+
+// heartbeat ping message
+message UsabilityCheckRequest {
+  int64 ct = 1; // client time
+  string engineCode = 2; // engine code, e.g. "gemma-3-4b", must be agent supported engine
+}
+
+// heartbeat pong message
+message UsabilityCheckResponse {
+  int64 ct = 1; // client time
+  int64 at = 2; // agent time
+  bool result = 3;
+}
+
+// agent info request message
+message AgentInfoRequest {
+  int64 clientVersion = 1; // client version
+  string plaintext = 2;
+  string ciphertext = 3;
+}
+
+// translate engine message
+message TranslateEngine {
+  string code = 1; // engine code, e.g. "gemma-3-4b"
+  string name = 2; // engine name, e.g. "Gemma 3 4B"
+}
+
+// agent info response message
+message AgentInfoResponse {
+  int64 agentVersionNumber = 1; // agent version number, e.g. 1000001
+  string agentVersion = 2;  // agent version, e.g. "1.0"
+  repeated TranslateEngine engines = 3; //agent support engines, e.g. "gemma-3-4b"
+  bool keyVerificationResult =4;
+}
+
+// glossary words message
+message Glossary {
+  string srcWords = 1; // source words, e.g. "hello"
+  string targetWords = 2; // target words, e.g. "你好"
+}
+
+// translate item message
+message InputItem {
+  int32 id = 1; // item id
+  string input = 2; // input string
+  repeated  Glossary glossaryList = 3;
+  bool glossaryIgnoreCase = 4;
+}
+
+message LangItem {
+  string inputLang = 1; // input language, e.g. en, may be "auto"
+  repeated InputItem inputItemList = 2;
+}
+
+// translate request message
+message TranslateRequest {
+  string requestId = 1; // request id
+  string targetLang = 2; // target language, e.g. zh-CN
+  string engineCode = 3; // engine code, e.g. "gemma-3-4b", must be agent supported engine
+  repeated string inputDataList = 4;  // input data, encrypted
+  bool isAutoTrans = 5; // is auto translate
+}
+
+message ResultItem {
+  int32 id = 1;
+  string result = 2;
+}
+
+// translate response message, stream
+message TranslateResponse {
+  string requestId = 1; // request id
+  repeated string outputDataList = 2; //encrypted
+  bool  isAllItemTransFinished = 3;   // is all item translated
+}

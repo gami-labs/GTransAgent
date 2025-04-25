@@ -1,0 +1,5 @@
+# Description: DeeplTranslator configuration
+
+# DeepL API Key
+# https://developers.deepl.com/docs
+apiKey:

@@ -1,0 +1,6 @@
+# Description: Youdao translator configuration
+
+# Youdao translation API key
+# https://ai.youdao.com/console/#/service-singleton/text-translation
+apiKey:
+apiSecret:

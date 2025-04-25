@@ -1,0 +1,46 @@
+# This file is used to configure the Ollama translator
+
+# url is the URL of the Ollama server
+url: http://127.0.0.1:11434/api/chat
+#url: http://192.168.50.200:11434/api/chat
+
+engineMapping:
+  gemma-3-1b: # engineCode
+    name: Gemma 3 1B # engineName
+    model: gemma3:1b # modelCode
+  gemma-3-4b-it-qat: # engineCode
+    name: Gemma 3 4B QAT # engineName
+    model: gemma3:4b-it-qat # modelCode
+  gemma-3-4b: # engineCode
+    name: Gemma 3 4B # engineName
+    model: gemma3:1b # modelCode
+  qwen-2.5-0.5b:
+    name: Qwen 2.5 0.5B
+    model: qwen2.5:0.5b
+  qwen-2.5-1.5b:
+    name: Qwen 2.5 1.5B
+    model: qwen2.5:1.5b
+  qwen-2.5-4b:
+    name: Qwen 2.5 4B
+    model: qwen2.5:4b
+# you can add more engines here
+
+
+concurrent: 3  # Number of concurrent requests
+systemPrompts: |
+  You are a professional translator proficient in {{srcLang}} and {{targetLang}}. Strictly follow these rules:
+  1. Translate the given text from {{srcLang}} to fluent, natural {{targetLang}}.
+  2. Prioritize exact terminology replacements from the provided vocabulary list (format: "english_term": "chinese_term").
+  3. Term matching is case-{{glossarySensitive}} by default.
+  4. Never add explanations, pinyin, or non-translation content.
+  5. Maintain original formatting (e.g., line breaks, punctuation).
+
+userPrompts: |
+  Translate this {{srcLang}} text to {{targetLang}}:
+  
+  {{original}}
+  
+  Vocabulary list:
+  {{glossaryList}}
+  
+  Respond ONLY with the final translation.

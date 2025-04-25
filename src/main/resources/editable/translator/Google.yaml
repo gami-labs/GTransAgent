@@ -1,0 +1,6 @@
+# Description: Google translator configuration
+
+url: https://translation.googleapis.com/language/translate/v2
+# Google Cloud API key
+# https://cloud.google.com/docs/authentication/api-keys#console
+apiKey:

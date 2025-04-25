@@ -1,0 +1,7 @@
+# Description: Microsoft (Azure) translator configuration
+
+# Azure Translator
+# https://learn.microsoft.com/zh-cn/azure/ai-services/translator/how-to/create-translator-resource#authentication-keys-and-endpoint-url
+apiKey:
+# eg. southeastasia
+resourceRegion:

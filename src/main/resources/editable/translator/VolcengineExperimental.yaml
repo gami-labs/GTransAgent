@@ -1,0 +1,4 @@
+# Description: Microsoft Public translator configuration
+
+url: https://translate.volcengine.com/crx/translate/v1
+concurrent: 5  # Number of concurrent requests

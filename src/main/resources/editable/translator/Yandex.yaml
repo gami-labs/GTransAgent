@@ -1,0 +1,6 @@
+# Description: Yandex cloud translator configuration
+
+# Yandex cloud translation API key
+url: https://translate.api.cloud.yandex.net/translate/v2/translate
+# https://yandex.cloud/en/docs/iam/operations/authentication/manage-api-keys#create-api-key
+apiKey:

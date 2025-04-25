@@ -1,0 +1,9 @@
+# Description: Volcengine translator configuration
+
+# Volcengine translation API key
+# https://translate.volcengine.com/api
+# https://console.volcengine.com/iam/keymanage
+# or set the environment variable VOLCENGINE_TRANSLATION_API_KEY
+apiKey:
+# or set the environment variable VOLCENGINE_TRANSLATION_API_SECRET
+apiSecret:

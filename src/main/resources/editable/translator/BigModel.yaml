@@ -1,0 +1,70 @@
+# This file is used to configure the BigModel translator
+
+# url is the URL of the BigModel API
+# https://bigmodel.cn/usercenter/proj-mgmt/apikeys
+url: https://open.bigmodel.cn/api/paas/v4/chat/completions
+# or set BIGMODEL_API_KEY in environment.
+apiKey:
+
+# all modes can find in the following link
+# https://bigmodel.cn/console/modelcenter/square
+engineMapping:
+  glm-4-plus: # engineCode
+    name: GLM-4-Plus # engineName
+    model: glm-4-plus # Model ID, API parameters.
+  glm-4-flash: # engineCode
+    name: GLM-4-Flash # engineName
+    model: glm-4-flash-250414 # Model ID, API parameters.
+  glm-4-long: # engineCode
+    name: GLM-4-Long # engineName
+    model: glm-4-long # Model ID, API parameters.
+# you can add more engines here
+
+
+##
+#
+#    Input Format:
+#    [{"id":1,"text":"Source Text"}]
+#
+#    Output Format:
+#    {"translations":[{"id":1,"text":"Translated Text"}]}
+#
+#    glossaryList format:
+#      {
+#        "test": "检测",
+#        "internet": "互联网"
+#      }
+#
+##
+
+concurrent: 3  # Number of concurrent requests
+systemPrompts: |
+    You are a professional translator proficient in {{srcLang}} and {{targetLang}}. Strictly follow these rules:
+    1. Translate the given text from {{srcLang}} to fluent, natural {{targetLang}}.
+    2. Prioritize exact terminology replacements from the provided vocabulary list (format: "english_term": "chinese_term").
+    3. Term matching is case-{{glossarySensitive}} by default.
+    4. Never add explanations, pinyin, or non-translation content.
+    5. Maintain original formatting (e.g., line breaks, punctuation).
+
+userPrompts: |
+    Translate JSON entries from {{srcLang}} to {{targetLang}}:
+
+    Input Format:
+    [{"id":1,"text":"Source Text"}]
+    
+    Output Format:
+    {"translations":[{"id":1,"text":"Translated Text"}]}
+    
+    Vocabulary (case-{{{glossarySensitive}}}):
+    {{glossaryList}}
+    
+    Instructions:
+    1. Processing sequence:
+      - Phase 1: Fix OCR errors (e.g., 1↔l, 0↔O, missing punctuation)
+      - Phase 2: Translate text while applying vocabulary replacements
+      - Phase 3: Ensure JSON-safe escaping for all outputs
+    2. Preserve numerical values and technical codes unchanged
+    3. Never add explanations or non-requested content
+    
+    BEGIN INPUT:
+    {{original}}

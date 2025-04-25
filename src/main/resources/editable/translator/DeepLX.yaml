@@ -1,0 +1,7 @@
+# Description: DeepLXTranslator configuration
+
+# https://deeplx.owo.network/
+# DeepLX url, e.g. http://localhost:1188
+url: http://localhost:1188
+# Number of concurrent requests
+concurrent: 3
