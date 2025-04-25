@@ -198,7 +198,7 @@ tasks.jpackage {
     mainJar = "${archiveBaseName}-${version}.jar"
     mainClassName = "${mainClassName}"
 
-    //removeDestination = true
+    removeDestination = true
     javaOptions = ["-Dfile.encoding=UTF-8", "-Xms256m",
                    "-Xmx1024m"]
 
