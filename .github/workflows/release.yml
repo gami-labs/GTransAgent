@@ -28,12 +28,13 @@ jobs:
           java-version: 17
           distribution: 'temurin'
           java-package: jdk
-          cache: 'gradle'
 
       # Configure Gradle for optimal use in GitHub Actions, including caching of downloaded dependencies.
       # See: https://github.com/gradle/actions/blob/main/setup-gradle/README.md
       - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@af1da67850ed9a4cedd57bfd976089dd991e2582 # v4.0.0
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '8.2' # Quotes required to prevent YAML converting to number
 
       - name: read-yaml-file
         uses: pietrobolcato/action-read-yaml@1.0.0
@@ -59,7 +60,7 @@ jobs:
 #      - name: "Build Jar Archive with Gradle"
 #        if: ${{ matrix.os == 'ubuntu-latest' }}
 #        shell: bash
-#        run: ./gradlew clean -x test packageJarZipArchive
+#        run: ./gradlew -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
         shell: bash
