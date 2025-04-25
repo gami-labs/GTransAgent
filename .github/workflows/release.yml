@@ -1,13 +1,12 @@
 name: Release
 
 on:
-#  push:
-#    tags:
-#      - 'v*'
+  #  push:
+  #    tags:
+  #      - 'v*'
+  push:
+    branches: [ "main" ]
   workflow_dispatch:
-
-permissions:
-  contents: write
 
 jobs:
   build:
@@ -15,8 +14,13 @@ jobs:
       matrix:
         os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, windows-11-arm, macos-latest, macos-13]
     runs-on: ${{ matrix.os }}
+
+    permissions:
+      contents: write
+
     steps:
       - uses: actions/checkout@v4
+
       - name: Set up JDK 17
         uses: actions/actions/setup-java@v4
         with:
@@ -24,31 +28,38 @@ jobs:
           distribution: 'oracle'
           java-package: jdk
           cache: 'gradle'
+
       - name: read-yaml-file
         uses: pietrobolcato/action-read-yaml@1.0.0
         id: read_internal_config
         with:
           config: ${{ github.workspace }}/src/main/resources/internal.yaml
+
       - name: Get version
         id: get_version
         run: |
           echo VERSION: ${{ steps.read_internal_config.outputs['agentVersionName'] }}
           echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
-#      - name: Get version
-#        id: get_version
-#        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+      #      - name: Get version
+      #        id: get_version
+      #        run: echo ::set-output name=VERSION::${GITHUB_REF/refs\/tags\//}
+
+      - name: Change wrapper permissions
+        run: chmod +x ./gradlew
 
       - name: "Build Jar Archive with Gradle"
         run: ./gradlew clean packageJarZipArchive
+
       - name: "Build Jpackage Archive with Gradle"
         run: ./gradlew clean packageJpackageZipArchive
+
       - name: Release
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ steps.get_version.outputs.VERSION }}
           tag_name: ${{ steps.get_version.outputs.VERSION }}
           draft: true
-#          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+          #          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
           files: |
             GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-jar.zip
             GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-win-x86-64.zip
