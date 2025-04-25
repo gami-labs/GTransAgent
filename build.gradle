@@ -167,6 +167,8 @@ tasks.jpackage {
     dependsOn("fatJar")
     //finalizedBy("copyEditableConfigFileToJpackage")
 
+    outputs.dir("$buildDir/$distributionDir/${archiveBaseName}")
+
     doFirst {
         println "\n\njpackage begin: "
         println fileTree(include: ['**/*'], dir: "$buildDir/libs").collect()
@@ -174,6 +176,7 @@ tasks.jpackage {
 
     input = "$buildDir/libs"
     destination = "$buildDir/$distributionDir"
+
 
     appName = "${archiveBaseName}"
     appVersion = "${version}"
@@ -184,7 +187,7 @@ tasks.jpackage {
     mainJar = "${archiveBaseName}-${version}.jar"
     mainClassName = "${mainClassName}"
 
-    //removeDestination = true
+    removeDestination = true
     javaOptions = ["-Dfile.encoding=UTF-8", "-Xms256m",
                    "-Xmx1024m"]
 
