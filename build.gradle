@@ -219,7 +219,7 @@ tasks.jpackage {
 
 task packageJpackageZipArchive(type: Zip) {
     dependsOn("jpackage")
-    dependsOn("copyEditableConfigFileToJpackage")
+    //dependsOn("copyEditableConfigFileToJpackage")
 
     doFirst {
         println "\n\npackageJpackageZipArchive begin: "
