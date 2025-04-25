@@ -145,14 +145,20 @@ var distributionDir = 'distributions'
 // copy editable config files to libs
 task copyEditableConfigFile(type: Copy) {
     from('src/main/resources/editable')
-    excludes = []
     into "${buildDir}/libs"
 }
 
 // copy editable config files to jpackage directory
 task copyEditableConfigFileToJpackage(type: Copy) {
+    doFirst {
+        println "\n\ncopyEditableConfigFileToJpackage begin: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
+    doLast {
+        println "\n\ncopyEditableConfigFileToJpackage end: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
     from('src/main/resources/editable')
-    excludes = []
     into "$buildDir/$distributionDir/${archiveBaseName}"
 }
 
