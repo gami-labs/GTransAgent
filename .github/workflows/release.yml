@@ -12,8 +12,8 @@ jobs:
   build:
     strategy:
       matrix:
-#        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest]
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest]
+#        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
     permissions:
@@ -57,26 +57,20 @@ jobs:
         shell: bash
         run: chmod +x ./gradlew
 
-#      - name: "Build Jar Archive with Gradle"
-#        if: ${{ matrix.os == 'ubuntu-latest' }}
-#        shell: bash
-#        run: ./gradlew -x test packageJarZipArchive
+      - name: "Build Jar Archive with Gradle"
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+        shell: bash
+        run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
         shell: bash
-        run: ./gradlew -x test packageJpackageZipArchive
+        run: ./gradlew clean -x test packageJpackageZipArchive
 
       - name: Check version
         shell: bash
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
           echo "VERSION=${{ steps.get_version.outputs.VERSION }}"
-
-      - name: Check files
-        shell: cmd
-        if: ${{ matrix.os == 'windows-latest' }}
-        run: |
-          echo "dir releases"
 
       - name: Release
         uses: softprops/action-gh-release@v2
