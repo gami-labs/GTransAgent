@@ -95,7 +95,7 @@ var archiveBaseName = 'GTransAgent'
 def internalConfig = new Yaml().loadAll(new File("$projectDir/src/main/resources/internal.yaml").newInputStream()).first()
 version = internalConfig['agentVersionName']
 //version = '1.0' //Error: Invalid version number: 1.0-SNAPSHOT (only '0'-'9' and '.' allowed)
-print("version: " + version)
+println("version: " + version)
 
 application {
     mainClassName = 'net.gtransagent.GTransAgentServer'
@@ -208,6 +208,9 @@ task packageJpackageZipArchive(type: Zip) {
     var osArch = getOsArch()
     archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
     destinationDirectory = file("${rootProject}/../releases/")
+
+    println("archiveFileName: " + archiveFileName+", destinationDirectory: " + destinationDirectory)
+
     from("$buildDir/$distributionDir/${archiveBaseName}") {
     }
 }
@@ -219,13 +222,15 @@ task packageJarZipArchive(type: Zip) {
 
     archiveFileName = "${archiveBaseName}-bin-${version}-jar.zip"
     destinationDirectory = file("${rootProject}/../releases/")
+
+    println("archiveFileName: " + archiveFileName+", destinationDirectory: " + destinationDirectory)
     from("$buildDir/libs") {
     }
 }
 
 def getOsArch() {
     def arch = DefaultNativePlatform.currentArchitecture
-    print("arch: " + arch)
+    println("arch: " + arch)
     if (org.gradle.internal.os.OperatingSystem.current().isWindows()) {
         return ("win-" + arch.name.toLowerCase());
     } else if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {

@@ -53,6 +53,7 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: "Build Jar Archive with Gradle"
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: ./gradlew clean -x test packageJarZipArchive
 
       - name: "Build Jpackage Archive with Gradle"
@@ -66,8 +67,8 @@ jobs:
           draft: true
           #          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
           files: |
-            GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-jar.zip
-            GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-win-x86-64.zip
-            GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-x86-64.zip
-            GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-aarch64.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-jar.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-win-x86-64.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-x86-64.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-aarch64.zip
  
