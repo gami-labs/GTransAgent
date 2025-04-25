@@ -220,9 +220,23 @@ tasks.jpackage {
     }
 }
 
-task packageJpackageZipArchive(type: Zip) {
+task showJpackageResult() {
     dependsOn("jpackage")
-    //dependsOn("copyEditableConfigFileToJpackage")
+
+    doFirst {
+        println "\n\ncopyEditableConfigFileToJpackage begin: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
+
+    doLast {
+        println "\n\ncopyEditableConfigFileToJpackage end: "
+        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
+    }
+}
+
+task packageJpackageZipArchive(type: Zip) {
+    //dependsOn("jpackage")
+    dependsOn("showJpackageResult")
 
     doFirst {
         println "\n\npackageJpackageZipArchive begin: "
