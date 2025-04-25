@@ -150,6 +150,8 @@ task copyEditableConfigFile(type: Copy) {
 
 // copy editable config files to jpackage directory
 task copyEditableConfigFileToJpackage(type: Copy) {
+    dependsOn("jpackage")
+
     doFirst {
         println "\n\ncopyEditableConfigFileToJpackage begin: "
         println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
@@ -214,19 +216,12 @@ tasks.jpackage {
     doLast {
         println "\n\njpackage end: "
         println fileTree(include: ['**/*'], dir: "$destination/GTransAgent").collect()
-
-        doLast {
-            println "\n\ncopyEditableConfigFileToJpackage end: "
-            println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
-        }
-        from('src/main/resources/editable')
-        into "$buildDir/$distributionDir/${archiveBaseName}"
     }
 }
 
 task packageJpackageZipArchive(type: Zip) {
-    dependsOn("jpackage")
-    //dependsOn("copyEditableConfigFileToJpackage")
+    //dependsOn("jpackage")
+    dependsOn("copyEditableConfigFileToJpackage")
 
     doFirst {
         println "\n\npackageJpackageZipArchive begin: "
