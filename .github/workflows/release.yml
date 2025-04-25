@@ -63,7 +63,7 @@ jobs:
 
       - name: "Build Jpackage Archive with Gradle"
         shell: bash
-        run: ./gradlew clean -x test packageJpackageZipArchive
+        run: ./gradlew -x test packageJpackageZipArchive
 
       - name: Check version
         shell: bash
