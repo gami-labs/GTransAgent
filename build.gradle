@@ -93,7 +93,10 @@ test {
 var archiveBaseName = 'GTransAgent'
 
 def internalConfig = new Yaml().loadAll(new File("$projectDir/src/main/resources/internal.yaml").newInputStream()).first()
+
+def versionForJpackage = internalConfig['agentVersionName']
 version = "v" + internalConfig['agentVersionName']
+
 //version = '1.0' //Error: Invalid version number: 1.0-SNAPSHOT (only '0'-'9' and '.' allowed)
 println("version: " + version)
 
@@ -161,6 +164,9 @@ task copyScriptFiles(type: Copy) {
             "internal.yaml"
     ]
     into "${buildDir}/libs"
+    expand([
+            version: version,
+    ])
 }
 
 // need to install jdk 17, and set JAVA_HOME to jdk 17,
@@ -176,7 +182,7 @@ tasks.jpackage {
     destination = "$buildDir/$distributionDir"
 
     appName = "${archiveBaseName}"
-    appVersion = "${version}"
+    appVersion = "${versionForJpackage}"
     vendor = "GTransAgent"
 
     type = "app-image"

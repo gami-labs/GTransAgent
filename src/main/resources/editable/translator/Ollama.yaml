@@ -11,18 +11,9 @@ engineMapping:
   gemma-3-4b-it-qat: # engineCode
     name: Gemma 3 4B QAT # engineName
     model: gemma3:4b-it-qat # modelCode
-  gemma-3-4b: # engineCode
-    name: Gemma 3 4B # engineName
-    model: gemma3:1b # modelCode
-  qwen-2.5-0.5b:
-    name: Qwen 2.5 0.5B
-    model: qwen2.5:0.5b
   qwen-2.5-1.5b:
     name: Qwen 2.5 1.5B
     model: qwen2.5:1.5b
-  qwen-2.5-4b:
-    name: Qwen 2.5 4B
-    model: qwen2.5:4b
 # you can add more engines here
 
 

@@ -15,10 +15,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.system.exitProcess
 
 /**
- * A server that hosts HostnameGreeter, plus infrastructure services like health and reflection.
- *
- *
- * This server is intended to be a general purpose "dummy" server.
+ * GTransAgentServer is the main entry point for the GTransAgent server.
  */
 object GTransAgentServer {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -26,6 +23,14 @@ object GTransAgentServer {
     @Throws(IOException::class, InterruptedException::class)
     @JvmStatic
     fun main(args: Array<String>) {
+        val isRunFromJar = AgentFactory.isRunFromJar()
+        val configExistPath = AgentFactory.lookupConfigExistPath()
+        if (isRunFromJar && configExistPath == null) {
+            logger.warn("Can't find config file, please check the config file is in any of the following paths: ${AgentFactory.getConfigFilesLookupDir()}")
+            exitProcess(1)
+        }
+        logger.warn("Found config file in path: ${configExistPath}, all lookup paths: ${AgentFactory.getConfigFilesLookupDir()}")
+
         // check and create security key
         SecurityKeyAccessor.checkAndCreateSecurityKey()
 

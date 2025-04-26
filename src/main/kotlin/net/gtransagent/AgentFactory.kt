@@ -21,6 +21,8 @@ object AgentFactory {
     val options = DumperOptions()
     val yaml = Yaml(options)
 
+    var configPath: String? = null
+
     lateinit var internalConfig: InternalConfig
     lateinit var publicConfig: PublicConfig
 
@@ -47,9 +49,45 @@ object AgentFactory {
         return translatorWithEngineKeyMap[engineCode]
     }
 
+    /**
+     * Get the configuration files lookup directorys.
+     */
+    fun getConfigFilesLookupDir(): List<String> {
+        val classPath = if (javaClass.getResource("/")?.path == null) {
+            File(this::class.java.getProtectionDomain().codeSource.location.path).canonicalPath
+        } else {
+            File(javaClass.getResource("/")!!.path).canonicalPath
+        }
+        logger.debug("getConfigFilesLookupDir classPath: $classPath")
+
+        val sortedPaths = mutableListOf<String>(
+            Paths.get(classPath).parent.toString()
+        )
+        if (Paths.get(classPath).parent.parent != null) {
+            sortedPaths.add(Paths.get(classPath).parent.parent.toString())
+        }
+        if (!sortedPaths.contains(System.getProperty("user.dir"))) {
+            sortedPaths.add(System.getProperty("user.dir"))
+        }
+        return sortedPaths
+    }
+
+    fun isRunFromJar(): Boolean {
+        val path = File(this::class.java.getProtectionDomain().codeSource.location.path).canonicalPath
+        return path.endsWith(".jar")
+    }
+
+    fun lookupConfigExistPath(): String? {
+        configPath = getConfigFilesLookupDir().firstOrNull { dir ->
+            val file = File(dir, Constant.PUBLIC_CONFIG_FILE_NAME)
+            file.exists()
+        }
+        return configPath
+    }
+
     private fun getPublicConfigFilePath(): String {
         return Paths.get(
-            System.getProperty("user.dir"), Constant.PUBLIC_CONFIG_FILE_NAME
+            (lookupConfigExistPath() ?: System.getProperty("user.dir")), Constant.PUBLIC_CONFIG_FILE_NAME
         ).toString()
     }
 
@@ -59,6 +97,7 @@ object AgentFactory {
             try {
                 internalConfig = yaml.loadAs(it, InternalConfig::class.java)
                 logger.info("load internal config success, agentVersionName: ${internalConfig.agentVersionName}, agentVersionNumber: ${internalConfig.agentVersionNumber}")
+                logger.warn("GTransAgent Version: v${internalConfig.agentVersionName}, BuildNumber: ${internalConfig.agentVersionNumber}")
             } catch (e: Exception) {
                 logger.error("load internal config error: ${e.message}", e)
                 exitProcess(1) // exit

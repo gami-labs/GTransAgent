@@ -46,3 +46,4 @@ releases/
 *.kt~
 .idea/
 *.xml~
+.skey

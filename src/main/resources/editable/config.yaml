@@ -4,8 +4,10 @@ enablesTranslators:
   # translatorCode for the translator, must match the translatorCode in translatorDefines
   # eg. Google, Ollama
   - Ollama
-  - Google
-  - Microsoft
+  - GoogleExperimental
+  - MicrosoftExperimental
+  - TencentExperimental
+  - YandexExperimental
 
 # add all the engines you want to support here
 translatorDefines:
