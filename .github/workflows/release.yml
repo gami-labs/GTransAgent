@@ -1,9 +1,9 @@
 name: Release
 
 on:
-  #  push:
-  #    tags:
-  #      - 'v*'
+  push:
+    tags:
+      - 'v*'
 #  push:
 #    branches: [ "main" ]
   workflow_dispatch:
@@ -12,7 +12,7 @@ jobs:
   build:
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest]
+        os: [ubuntu-latest, ubuntu-24.04-arm, windows-latest, macos-latest, macos-13]
 #        os: [ubuntu-latest]
     runs-on: ${{ matrix.os }}
 
@@ -46,8 +46,8 @@ jobs:
         id: get_version
         shell: bash
         run: |
-          echo VERSION: ${{ steps.read_internal_config.outputs['agentVersionName'] }}
-          echo "VERSION=${{ steps.read_internal_config.outputs['agentVersionName'] }}" >> $GITHUB_OUTPUT
+          echo VERSION: v${{ steps.read_internal_config.outputs['agentVersionName'] }}
+          echo "VERSION=v${{ steps.read_internal_config.outputs['agentVersionName'] }}" >> $GITHUB_OUTPUT
       #          echo ::set-output name=VERSION::${{ steps.read_internal_config.outputs['agentVersionName'] }}
       #      - name: Get version
       #        id: get_version
@@ -64,7 +64,18 @@ jobs:
 
       - name: "Build Jpackage Archive with Gradle"
         shell: bash
+        if: ${{ ! startsWith(matrix.os, 'macos') }}
         run: ./gradlew clean -x test packageJpackageZipArchive
+
+      - name: "Build Jpackage Archive with Gradle for Linux"
+        shell: bash
+        if: ${{ startsWith(matrix.os, 'ubuntu') }}
+        run: ./gradlew clean -x test packageJpackageZipArchiveForLinux
+
+      - name: "Build Jpackage Archive with Gradle for Mac"
+        shell: bash
+        if: ${{ startsWith(matrix.os, 'macos') }}
+        run: ./gradlew clean -x test packageJpackageZipArchiveForMac
 
       - name: Check version
         shell: bash
@@ -76,12 +87,14 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           name: ${{ steps.get_version.outputs.VERSION }}
-          tag_name: ${{ steps.get_version.outputs.VERSION }}
-          draft: true
-          #          prerelease: ${{ contains(github.ref, 'beta') || contains(github.ref, 'alpha') }}
+#          tag_name: ${{ steps.get_version.outputs.VERSION }}
+          draft: false
+          prerelease: true
           files: |
             releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-jar.zip
             releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-win-x86-64.zip
             releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-x86-64.zip
             releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-linux-aarch64.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-mac-aarch64.zip
+            releases/GTransAgent-bin-${{ steps.get_version.outputs.VERSION }}-mac-x86-64.zip
  

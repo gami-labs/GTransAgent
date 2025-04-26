@@ -36,9 +36,9 @@ AN --> HN[Other Engines]
 Configure enabled **translators** before starting `GTransAgent`.
 
 ## Supported OS
-- [x] Windows (x64 & Arm)
-- [x] macOS (Intel & Apple Silicon)
-- [x] Linux/[FreeBSD]
+- [x] Windows (x64 and Arm)
+- [x] Mac OS (Intel and Arm)
+- [x] Linux / [FreeBSD]
 
 ## Supported Translators
 
@@ -150,13 +150,15 @@ Change key: Edit `.skey` (16-character string)
 - Compile and package the JAR
 
     ```shell
-    ./gradlew clean packageJarZipArchive
+    chmod +x ./gradlew
+    ./gradlew clean -x test packageJarZipArchive
     ```
 
 - Compile and package with jpackage
 
     ```shell
-    ./gradlew clean packageJpackageZipArchive
+    chmod +x ./gradlew
+    ./gradlew clean -x test packageJpackageZipArchive
     ```
 
 - The successfully built `zip` files are saved under the `releases` directory
@@ -168,7 +170,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
 
 `GTransAgent` is released under the [GPL-3.0 license](./LICENSE).
 
-## Frequently Asked Questions
+## FAQ
 
 - **`Gaminik` fails to connect to `GTransAgent`**
 

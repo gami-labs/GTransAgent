@@ -119,8 +119,7 @@ protobuf {
 
 
 task fatJar(type: Jar) {
-    //finalizedBy("copyEditableConfigFile")
-
+    outputs.upToDateWhen { false }
     // do't delete this line, it is necessary for gradle to not delete the directory
     outputs.dir("${buildDir}/libs")
 
@@ -169,6 +168,7 @@ task copyScriptFiles(type: Copy) {
 tasks.jpackage {
     dependsOn("fatJar")
 
+    outputs.upToDateWhen { false }
     // do't delete this line, it is necessary for gradle to not delete the directory
     outputs.dir("$buildDir/$distributionDir/${archiveBaseName}")
 
@@ -205,14 +205,15 @@ task copyEditableConfigsToJpackage(type: Copy) {
     into "$buildDir/$distributionDir/${archiveBaseName}"
 }
 
+// copy editable config files to jpackage directory, for mac
+task copyEditableConfigsToJpackageForMac(type: Copy) {
+    dependsOn("jpackage")
+    from('src/main/resources/editable')
+    into "$buildDir/$distributionDir/${archiveBaseName}.app/Contents"
+}
 
 task packageJpackageZipArchive(type: Zip) {
     dependsOn("copyEditableConfigsToJpackage")
-
-//    doFirst {
-//        println "\n\npackageJpackageZipArchive begin: "
-//        println fileTree(include: ['**/*'], dir: "$buildDir/$distributionDir/${archiveBaseName}").collect()
-//    }
 
     var osArch = getOsArch()
     archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
@@ -221,6 +222,29 @@ task packageJpackageZipArchive(type: Zip) {
     from("$buildDir/$distributionDir/${archiveBaseName}") {
     }
 }
+
+task packageJpackageZipArchiveForMac(type: Zip) {
+    dependsOn("copyEditableConfigsToJpackageForMac")
+
+    var osArch = getOsArch()
+    archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
+    destinationDirectory = file("${rootProject}/../releases/")
+
+    from("$buildDir/$distributionDir/${archiveBaseName}.app") {
+    }
+}
+
+task packageJpackageZipArchiveForLinux(type: Zip) {
+    dependsOn("copyEditableConfigsToJpackage")
+
+    var osArch = getOsArch()
+    archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
+    destinationDirectory = file("${rootProject}/../releases/")
+
+    from("$buildDir/$distributionDir") {
+    }
+}
+
 
 task packageJarZipArchive(type: Zip) {
     dependsOn("fatJar")

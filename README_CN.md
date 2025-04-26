@@ -180,13 +180,15 @@ AN --> HN[其它翻译引擎]
 - 编译并打包jar
 
     ```shell
-    ./gradlew clean packageJarZipArchive
+    chmod +x ./gradlew
+    ./gradlew clean -x test packageJarZipArchive
     ```
 
 - 编译并打包jpackage
 
     ```shell
-    ./gradlew clean packageJpackageZipArchive
+    chmod +x ./gradlew
+    ./gradlew clean -x test packageJpackageZipArchive
     ```
 - 编译成功的 `zip` 文件保存在 `releases` 目录下
 
