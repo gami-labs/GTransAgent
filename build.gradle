@@ -93,7 +93,7 @@ test {
 var archiveBaseName = 'GTransAgent'
 
 def internalConfig = new Yaml().loadAll(new File("$projectDir/src/main/resources/internal.yaml").newInputStream()).first()
-version = internalConfig['agentVersionName']
+version = "v" + internalConfig['agentVersionName']
 //version = '1.0' //Error: Invalid version number: 1.0-SNAPSHOT (only '0'-'9' and '.' allowed)
 println("version: " + version)
 
