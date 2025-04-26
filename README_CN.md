@@ -38,7 +38,7 @@ AN --> HN[其它翻译引擎]
 
 
 ## 支持操作系统
-- [x] Windows (x64 and Arm)
+- [x] Windows (x64)
 - [x] Mac OS (Intel and Arm)
 - [x] Linux / [FreeBSD]
 

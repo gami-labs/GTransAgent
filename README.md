@@ -36,7 +36,7 @@ AN --> HN[Other Engines]
 Configure enabled **translators** before starting `GTransAgent`.
 
 ## Supported OS
-- [x] Windows (x64 and Arm)
+- [x] Windows (x64)
 - [x] Mac OS (Intel and Arm)
 - [x] Linux / [FreeBSD]
 

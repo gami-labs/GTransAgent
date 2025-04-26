@@ -176,7 +176,7 @@ tasks.jpackage {
 
     outputs.upToDateWhen { false }
     // do't delete this line, it is necessary for gradle to not delete the directory
-    outputs.dir("$buildDir/$distributionDir/${archiveBaseName}")
+    outputs.dir("$buildDir/$distributionDir")
 
     input = "$buildDir/libs"
     destination = "$buildDir/$distributionDir"
@@ -236,7 +236,7 @@ task packageJpackageZipArchiveForMac(type: Zip) {
     archiveFileName = "${archiveBaseName}-bin-${version}-${osArch}.zip"
     destinationDirectory = file("${rootProject}/../releases/")
 
-    from("$buildDir/$distributionDir/${archiveBaseName}.app") {
+    from("$buildDir/$distributionDir") {
     }
 }
 
