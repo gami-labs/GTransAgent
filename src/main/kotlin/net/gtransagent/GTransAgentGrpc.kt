@@ -11,6 +11,7 @@ import org.slf4j.LoggerFactory
 
 class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
+    private val lock = Any()
 
     override fun agentInfo(request: AgentInfoRequest, responseObserver: StreamObserver<AgentInfoResponse>) {
         logger.info("AgentInfo request: ${request.clientVersion}")
@@ -109,13 +110,16 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
                 responseObserver.onError(status.asRuntimeException())
                 return@translate
             }
-            val responseBuilder = TranslateResponse.newBuilder()
-            responseBuilder.requestId = requestId
-            responseBuilder.isAllItemTransFinished = isAllItemTransFinished
-            responseBuilder.addAllOutputDataList(TransDataConverter.encryptResultData(transResultItems))
 
-            logger.info("Translate onNext: $requestId, isAllItemTransFinished: $isAllItemTransFinished, transResultItems: ${transResultItems.size}")
-            responseObserver.onNext(responseBuilder.build())
+            synchronized(lock) {
+                val responseBuilder = TranslateResponse.newBuilder()
+                responseBuilder.requestId = requestId
+                responseBuilder.isAllItemTransFinished = isAllItemTransFinished
+                responseBuilder.addAllOutputDataList(TransDataConverter.encryptResultData(transResultItems))
+
+                logger.info("Translate onNext: $requestId, isAllItemTransFinished: $isAllItemTransFinished, transResultItems: ${transResultItems.size}")
+                responseObserver.onNext(responseBuilder.build())
+            }
 
             if (isAllItemTransFinished) {
                 var endTime = System.currentTimeMillis()

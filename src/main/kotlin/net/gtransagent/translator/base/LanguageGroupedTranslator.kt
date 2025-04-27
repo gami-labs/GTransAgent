@@ -43,6 +43,7 @@ abstract class LanguageGroupedTranslator : ITranslator {
         val requestId: String,
         val targetLang: String,
         val totalCount: Int,
+        @Volatile
         var transFinished: Int = 0,
         val engineCode: String,
         val isAutoTrans: Boolean,

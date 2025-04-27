@@ -7,8 +7,6 @@ import net.gtransagent.grpc.ResultItem
 import okhttp3.OkHttpClient
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 
 
 abstract class FullBatchTranslator : ITranslator {

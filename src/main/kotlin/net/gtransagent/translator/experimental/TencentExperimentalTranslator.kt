@@ -104,7 +104,8 @@ class TencentExperimentalTranslator : LanguageGroupedTranslator() {
         val jsonMap = mutableMapOf<String, Any>()
         jsonMap["header"] = headerMap
         jsonMap["type"] = "plain"
-        jsonMap["source"] = mapOf(Pair("lang", CommonUtils.getLang(sourceLang)), Pair("text_list", inputs))
+        // jsonMap["source"] = mapOf(Pair("lang", CommonUtils.getLang(sourceLang)), Pair("text_list", inputs))
+        jsonMap["source"] = mapOf(Pair("lang", "auto"), Pair("text_list", inputs))
         jsonMap["target"] = mapOf(Pair("lang", CommonUtils.getLang(targetLang)))
 
         val payload = gson.toJson(jsonMap)
