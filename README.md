@@ -212,7 +212,12 @@ Change key: Edit `.skey` (16-character string)
 
     ```shell
     chmod +x ./gradlew
+  
+    # for windows
     ./gradlew clean -x test packageJpackageZipArchive
+
+    # for linux
+    ./gradlew clean -x test packageJpackageZipArchiveForLinux
     ```
 
 - The successfully built `zip` files are saved under the `releases` directory

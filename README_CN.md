@@ -240,9 +240,6 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
     # for windows
     ./gradlew clean -x test packageJpackageZipArchive
 
-    <!-- # for mac
-    ./gradlew clean -x test packageJpackageZipArchiveForMac -->
-
     # for linux
     ./gradlew clean -x test packageJpackageZipArchiveForLinux
     ```
