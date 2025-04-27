@@ -69,7 +69,9 @@ Configure enabled **translators** before starting `GTransAgent`.
 
 💡Click translator name for configuration details. △ indicates experimental stability
 
+---
 ## Usage
+---
 
 ### Using the version **with JRE**
 Find the latest `GTransAgent-bin-{version}-{win/linux}-{x86-64/aarch64}.zip` on the `Release` page. This version includes JRE and can run without local Java installation.
@@ -95,12 +97,36 @@ Refer to [Configuration](#config)
 - **Windows**  
   Navigate to the extracted directory and double-click `GTransAgent.exe`.
 
+  > Close the window to stop `GTransAgent`
+
 - **Linux**  
-  In Terminal, run:  
-    ```shell
-    cd GTransAgent
-    ./bin/GTransAgent
-    ```
+    - **Foreground run** (terminal cannot be closed)
+        In the terminal, enter and execute:
+
+        ```shell
+        cd GTransAgent
+        ./bin/GTransAgent
+        ```
+
+        > Press Ctrl + C to stop `GTransAgent`
+
+    - **Background run** (terminal can be closed)
+        In the terminal, enter and execute:
+
+        ```shell
+        cd GTransAgent
+        nohup ./bin/GTransAgent > output.txt &
+        ```
+
+        To stop `GTransAgent`:
+        In the terminal, enter and execute
+
+        ```shell
+        killall -9 GTransAgent
+
+        # Use the following command to check if GTransAgent is still running:
+        # ps aux|grep GTransAgent
+        ```
 
 ---
 
@@ -120,18 +146,44 @@ Refer to [Configuration](#config)
 
 #### 4. Launch
 - **Windows**  
-  Navigate to the extracted directory, right-click in an empty area, select "Open in Terminal", then run:  
+    Navigate to the extracted directory, right-click in an empty area, select "Open in Terminal", then run:  
+
     ```shell
     .\run.bat
     ```
 
-- **Mac & Linux**  
-  In Terminal, run:  
-    ```shell
-    cd GTransAgent
-    chmod +x ./run.sh
-    ./run.sh
-    ```
+    > Close the Terminal to stop `GTransAgent`
+
+- **Mac & Linux**
+  - **Foreground run** (terminal cannot be closed)
+      In the terminal, enter and execute:
+
+      ```shell
+      cd GTransAgent
+      chmod +x ./run.sh
+      ./run.sh
+      ```
+
+      > Press Ctrl + C to stop `GTransAgent`
+
+  - **Background run** (terminal can be closed)
+      In the terminal, enter and execute:
+
+      ```shell
+      cd GTransAgent
+      chmod +x ./run.sh
+      nohup ./run.sh > output.txt &
+      ```
+
+      To stop `GTransAgent`:
+      In the terminal, enter and execute
+
+      ```shell
+      killall -9 GTransAgent
+
+      # Use the following command to check if GTransAgent is still running:
+      # ps aux|grep GTransAgent
+      ```
 
 ---
 
@@ -148,6 +200,7 @@ The YandexExperimental Translator has been initialized. Engines: [YandexExperime
 GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at C:\Users\xxx\Downloads\GTransAgent\.skey
 ```
 
+---
 
 ### Configuration <a id="config"></a>
 
@@ -174,6 +227,8 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 3. If `Gaminik` runs on another device, configure firewall to allow TCP access on specified port. [Firewall Guide](https://www.wikihow.com/Open-Ports)
 
+---
+
 ### Connecting from Gaminik
 #### Access URL
 - Local device: `http://localhost:6028`
@@ -184,6 +239,8 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 After the first launch of `GTransAgent`, a random key will be generated and saved to the `.skey` file in the root directory. Open the `.skey` file and copy the 16-character-long string from it.
 
+---
+
 ## Advanced
 
 ### Logs
@@ -191,6 +248,8 @@ Logs stored in `log/` directory: `log.log` (all), `error.log` (errors).
 
 ### Modify Key
 Change key: Edit `.skey` (16-character string)
+
+---
 
 ## Build from Source
 
@@ -222,12 +281,16 @@ Change key: Edit `.skey` (16-character string)
 
 - The successfully built `zip` files are saved under the `releases` directory
 
+---
+
 ## Contributing
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
 
 ## License
 
 `GTransAgent` is released under the [GPL-3.0 license](./LICENSE).
+
+---
 
 ## FAQ
 

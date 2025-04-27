@@ -73,10 +73,16 @@ AN --> HN[其它翻译引擎]
 
 💡点击翻译器名称可以查看该翻译器的配置方式. △ 表示翻译器稳定性可能较差
 
+---
+
 ## `GTransAgent` 用法
 
+---
+
 ### 使用带 `JRE` 版本
+
 在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-{win/linux}-{x86-64/aarch64}.zip`, 即为带 `JRE` 版本, 无需本地安装 `Java` 即可运行.
+
 
 #### 1. 下载
 下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非ASCII字符)
@@ -99,14 +105,41 @@ AN --> HN[其它翻译引擎]
 
 #### 4. 启动
 - Windows
-进入解压目录, 双击 `GTransAgent.exe` 启动
+    进入解压目录, 双击 `GTransAgent.exe` 启动
+
+    > 关闭窗口停止`GTransAgent`
 
 - Linux
-在终端中继续输入并执行:
-    ```shell
-    cd GTransAgent
-    ./bin/GTransAgent
-    ```
+    - **前台运行** (终端不能关闭)
+        在终端中继续输入并执行:
+
+        ```shell
+        cd GTransAgent
+        ./bin/GTransAgent
+        ```
+
+        > 按下 Ctrl + C 停止运行 `GTransAgent`
+
+    - **后台运行** (终端可以关闭)
+        在终端中继续输入并执行:
+
+        ```shell
+        cd GTransAgent
+        nohup ./bin/GTransAgent > output.txt &
+        ```
+
+        停止运行 `GTransAgent` 方式:
+        在终端中继续输入并执行
+
+        ```shell
+        killall -9 GTransAgent
+
+        # 可用以下命令查看 GTransAgent 是否还在运行
+        # ps aux|grep GTransAgent
+        ```
+
+
+---
 
 ### 使用不带 `JRE` 版本
 在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-jar.zip`, 即为带 **不带JRE** 版本, 需要本地自带 [Java 8](https://www.java.com/en/download/) 及以上版本才可运行. **兼容性更广**, 所有`Java`支持的平台都可以运行(包括 Mac).
@@ -125,19 +158,45 @@ AN --> HN[其它翻译引擎]
 
 #### 4. 启动
 - Windows
-进入解压目录, 在空白处点击右键, 选择"在终端中打开", 然后在终端中输入并执行:
+    进入解压目录, 在空白处点击右键, 选择"在终端中打开", 然后在终端中输入并执行:
     ```shell
     .\run.bat
     ```
+    > 关闭终端停止`GTransAgent`
 
 - Mac & Linux
-在终端中继续输入并执行:
-    ```shell
-    cd GTransAgent
-    chmod +x ./run.sh
-    ./run.sh
-    ```
+    - **前台运行** (终端不能关闭)
+        在终端中继续输入并执行:
 
+        ```shell
+        cd GTransAgent
+        chmod +x ./run.sh
+        ./run.sh
+        ```
+
+        > 按下 Ctrl + C 停止运行 `GTransAgent`
+
+    - **后台运行** (终端可以关闭)
+        在终端中继续输入并执行:
+
+        ```shell
+        cd GTransAgent
+        chmod +x ./run.sh
+        nohup ./run.sh > output.txt &
+        ```
+
+        停止运行 `GTransAgent` 方式:
+        在终端中继续输入并执行
+
+        ```shell
+        killall -9 GTransAgent
+
+        # 可用以下命令查看 GTransAgent 是否还在运行
+        # ps aux|grep GTransAgent
+        ```
+
+
+---
 
 ### 启动成功界面
 
@@ -153,6 +212,9 @@ The TencentExperimental Translator has been initialized. Engines: [TencentExperi
 The YandexExperimental Translator has been initialized. Engines: [YandexExperimental]
 GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at C:\Users\xxx\Downloads\GTransAgent\.skey
 ```
+
+
+---
 
 ### 配置方式 <a id="config"></a>
 
@@ -187,6 +249,7 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 3. 如果你的 `Gaminik` 软件不是运行在这设备上, 那么你需要修改这台设备的防火墙规则, 以允许 `Gaminik` 通过你在 `config.yaml` 中配置的端口 (`TCP`) 来访问 `GTransAgent`. [如何配置防火墙?](https://www.wikihow.com/Open-Ports)
 
 
+---
 
 ### `Gaminik` 连接方式
 #### 获取访问地址
@@ -208,6 +271,9 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 在 `GTransAgent` 首次启动后, 会随机生成一个密钥, 并保存到根目录下面的 `.skey` 文件中. 打开 `.skey` 复制其中的16位长度的字符串即可.
 
+
+---
+
 ## 高级设置
 
 ### 日志查看
@@ -215,6 +281,9 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 ### 修改密钥
 编辑根目录下面的 `.skey` 文件, 输入16位长度的字符串作为新密钥 (长度必须是16位).
+
+
+---
 
 ## 手动编译
 
@@ -245,6 +314,9 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
     ```
 - 编译成功的 `zip` 文件保存在 `releases` 目录下
 
+
+---
+
 ## 贡献说明
 
 欢迎提交代码, 支持更多翻译器和翻译引擎. 查看 [如何贡献代码](./CONTRIBUTING.md).
@@ -252,6 +324,8 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 ## 许可协议
 
 `GTransAgent` 基于 [GPL-3.0 license](./LICENSE).
+
+---
 
 ## 常见问题
 - 启动后提示 "Failed to bind to address 0.0.0.0/0.0.0.0:6028"
