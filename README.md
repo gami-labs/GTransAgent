@@ -2,12 +2,38 @@ English | [简体中文](./README_CN.md)
 
 # GTransAgent
 
-A proxy translation tool designed to work with the `private translation engine` feature of [Gaminik](https://www.gaminik.cn/):
+A proxy translation tool designed to work with the `private translation engine` feature of [Gaminik](https://www.gaminik.net/):
 - Developed with `Kotlin`, supports multi-OS operation.
-- Supports invoking privately deployed LLMs like `Qwen-Turbo`, `Gemma 3` (via `Ollama`).
+- Supports invoking privately deployed LLMs like `Qwen-Turbo`, `Gemma 3` ... (via `Ollama`).
 - Supports all mainstream translation engines (requires self-applied `apiKey`).
 - Experimental free access to `Google`, `Microsoft`, `Yandex`, `Tencent` translation engines.
 - Customizable prompts when using LLMs for translation.
+
+<!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=3 orderedList=false} -->
+
+## Table of Contents {ignore=true}
+<!-- code_chunk_output -->
+
+- [Overview](#overview)
+- [Supported OS](#supported-os)
+- [Supported Translators](#supported-translators)
+- [Usage](#usage)
+  - [Using the version **with JRE**](#using-the-version-with-jre)
+  - [Using the version **without JRE**](#using-the-version-without-jre)
+  - [Successful Launch](#successful-launch)
+  - [Configuration ](#configuration-a-idconfiga)
+  - [Connecting from Gaminik](#connecting-from-gaminik)
+- [Advanced](#advanced)
+  - [Logs](#logs)
+  - [Modify Key](#modify-key)
+- [Build from Source](#build-from-source)
+  - [Dependencies](#dependencies)
+  - [Build Instructions](#build-instructions)
+- [Contributing](#contributing)
+- [License](#license)
+- [FAQ](#faq)
+
+<!-- /code_chunk_output -->
 
 ## Overview
 Relationship between `GTransAgent`, `Gaminik`, `Translator`, and `Translation Engine`:
@@ -69,9 +95,7 @@ Configure enabled **translators** before starting `GTransAgent`.
 
 💡Click translator name for configuration details. △ indicates experimental stability
 
----
 ## Usage
----
 
 ### Using the version **with JRE**
 Find the latest `GTransAgent-bin-{version}-{win/linux}-{x86-64/aarch64}.zip` on the `Release` page. This version includes JRE and can run without local Java installation.
@@ -128,7 +152,6 @@ Refer to [Configuration](#config)
         # ps aux|grep GTransAgent
         ```
 
----
 
 ### Using the version **without JRE**
 Find the latest `GTransAgent-bin-{version}-jar.zip` on the `Release` page. This version requires [Java 8](https://www.java.com/en/download/) or higher installed locally. **It offers broader compatibility** and can run on **all platforms supported by Java** (include Mac).  
@@ -185,8 +208,6 @@ Refer to [Configuration](#config)
       # ps aux|grep GTransAgent
       ```
 
----
-
 ### Successful Launch
 After launching, the following information will be displayed, indicating a successful launch:
 ```shell
@@ -200,7 +221,6 @@ The YandexExperimental Translator has been initialized. Engines: [YandexExperime
 GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at C:\Users\xxx\Downloads\GTransAgent\.skey
 ```
 
----
 
 ### Configuration <a id="config"></a>
 
@@ -227,7 +247,6 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 3. If `Gaminik` runs on another device, configure firewall to allow TCP access on specified port. [Firewall Guide](https://www.wikihow.com/Open-Ports)
 
----
 
 ### Connecting from Gaminik
 #### Access URL
@@ -239,7 +258,6 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 After the first launch of `GTransAgent`, a random key will be generated and saved to the `.skey` file in the root directory. Open the `.skey` file and copy the 16-character-long string from it.
 
----
 
 ## Advanced
 
@@ -248,8 +266,6 @@ Logs stored in `log/` directory: `log.log` (all), `error.log` (errors).
 
 ### Modify Key
 Change key: Edit `.skey` (16-character string)
-
----
 
 ## Build from Source
 
@@ -281,7 +297,6 @@ Change key: Edit `.skey` (16-character string)
 
 - The successfully built `zip` files are saved under the `releases` directory
 
----
 
 ## Contributing
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
@@ -290,7 +305,6 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
 
 `GTransAgent` is released under the [GPL-3.0 license](./LICENSE).
 
----
 
 ## FAQ
 
