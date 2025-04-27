@@ -12,7 +12,7 @@
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=3 orderedList=false} -->
 
-## 目录 {ignore=true}
+**目录**
 <!-- code_chunk_output -->
 
 - [介绍](#介绍)

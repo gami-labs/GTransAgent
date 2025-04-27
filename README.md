@@ -11,7 +11,7 @@ A proxy translation tool designed to work with the `private translation engine` 
 
 <!-- @import "[TOC]" {cmd="toc" depthFrom=2 depthTo=3 orderedList=false} -->
 
-## Table of Contents {ignore=true}
+**Table of Contents**
 <!-- code_chunk_output -->
 
 - [Overview](#overview)
