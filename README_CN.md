@@ -118,7 +118,7 @@ AN --> HN[其它翻译引擎]
 在`zip`文件上点击右键, 选择"全部解压缩..."
 
 - Linux
-打开终端([在 Mac 上打开或退出“终端”](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [Opening a terminal On Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), 输入并执行:
+打开终端([在 Mac 上打开或退出"终端"](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [在 Ubuntu 上打开"终端"](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), 输入并执行:
 
     ```shell
     cd {zip文件所在目录, 例如: /home/ecs-user/}
