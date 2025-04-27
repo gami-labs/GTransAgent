@@ -75,13 +75,90 @@ AN --> HN[其它翻译引擎]
 
 ## `GTransAgent` 用法
 
-在 Release 页面下载可执行文件的压缩包 `GTransAgent-bin-{version}-{os}-{arch}.zip`。并解压到任意目录 (目录名不要包含非 [ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) 字符)
+### [**👍推荐**] 使用带 `JRE` 版本
+在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-{win/mac/linux}-{x86-64/aarch64}.zip`, 即为带 `JRE` 版本, 无需本地安装 `Java` 即可运行.
 
-- [**👍推荐**] 下载文件名为: `GTransAgent-bin-{version}-{os}-{arch}.zip` 的链接为带 JRE 版本, **无需**本地安装 Java 即可运行.
+#### 1. 下载
+下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非ASCII字符)
 
-- 下载文件名为: `GTransAgent-bin-{version}-{os}-jar.zip` 的链接为 **不带JRE** 版本, 需要本地自带 [Java 8](https://www.java.com/en/download/) 及以上版本才可运行.
+#### 2. 解压
+- Windows
+在`zip`文件上点击右键, 选择"全部解压缩..."
 
-### 配置
+- Mac & Linux
+打开终端([在 Mac 上打开或退出“终端”](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [Opening a terminal On Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), 输入并执行:
+
+    ```shell
+    cd {zip文件所在目录, 例如: /home/ecs-user/}
+    unzip GTransAgent-bin-{xxx}.zip
+    ```
+
+#### 3. 配置
+参考 [配置方式](#config)
+
+
+#### 4. 启动
+- Windows
+进入解压目录, 双击 `GTransAgent.exe` 启动
+
+- Linux
+在终端中继续输入并执行:
+    ```shell
+    cd GTransAgent
+    ./bin/GTransAgent
+    ```
+
+- Mac
+在终端中继续输入并执行:
+    ```shell
+    cd GTransAgent
+    ./GTransAgent.app/Contents/MacOS/GTransAgent
+    ```
+
+### 使用不带 `JRE` 版本
+在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-jar.zip`, 即为带 **不带JRE** 版本, 需要本地自带 [Java 8](https://www.java.com/en/download/) 及以上版本才可运行. **兼容性更广**, 所有`Java`支持的平台都可以运行.
+
+#### 1. 下载
+下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非 [ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) 字符)
+
+#### 2. 解压
+与带 `JRE` 版本一致
+
+#### 3. 配置
+参考 [配置方式](#config)
+
+
+#### 4. 启动
+- Windows
+进入解压目录, 在空白处点击右键, 选择"在终端中打开", 然后在终端中输入并执行:
+    ```shell
+    .\run.bat
+    ```
+
+- Mac & Linux
+在终端中继续输入并执行:
+    ```shell
+    cd GTransAgent
+    ./run.sh
+    ```
+
+
+### 启动成功界面
+
+启动后, 会显示以下信息, 表明启动成功: 
+
+```shell
+Found config file in path: C:\Users\xxx\Downloads\GTransAgent, all lookup paths: [C:\Users\xxx\Downloads\GTransAgent, C:\Users\xxx\Downloads]
+GTransAgent Version: v1.0, BuildNumber: 10
+The Ollama Translator has been initialized. Engines: [Gemma 3 1B, Gemma 3 4B QAT, Qwen 2.5 1.5B]
+The GoogleExperimental Translator has been initialized. Engines: [GoogleExperimental]
+The MicrosoftExperimental Translator has been initialized. Engines: [MicrosoftExperimental]
+The TencentExperimental Translator has been initialized. Engines: [TencentExperimental]
+The YandexExperimental Translator has been initialized. Engines: [YandexExperimental]
+GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at C:\Users\xxx\Downloads\GTransAgent\.skey
+```
+
+### 配置方式 <a id="config"></a>
 
 1. 打开解压后根目录下的 `config.yaml`, 根据需要在 `enablesTranslators` 节点下面添加要启用翻译器的 `translatorCode`. [查看 YAML 语法](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html)
 
@@ -114,31 +191,6 @@ AN --> HN[其它翻译引擎]
 3. 如果你的 `Gaminik` 软件不是运行在这设备上, 那么你需要修改这台设备的防火墙规则, 以允许 `Gaminik` 通过你在 `config.yaml` 中配置的端口 (`TCP`) 来访问 `GTransAgent`. [如何配置防火墙?](https://www.wikihow.com/Open-Ports)
 
 
-### 启动方式
-
-#### 带 JRE 版本
-
-双击 `GTransAgent.exe` 即可启动
-
-#### 不带 JRE 版本
-
-- Windows
-
-    打开 `命令提示符`, 进入解压目录, 输入 `run.bat` 并回车, 即可启动
-
-- Mac & Linux 
-
-    打开 `Shell`, 进入解压目录, 输入 `run.sh` 并回车, 即可启动
-
-#### 启动成功界面
-
-启动成功后, 会在控制台打印类似以下信息, 表明启动成功: 
-
-```console
-2025-04-24 14:19:33.839 [main] WARN  net.gtransagent.AgentFactory - The Ollama Translator has been initialized. Engines: [Gemma 3 1B, Gemma 3 4B, Qwen 2.5 0.5B, Qwen 2.5 1.5B, Qwen 2.5 4B]
-2025-04-24 14:19:33.846 [main] WARN  net.gtransagent.AgentFactory - The Microsoft Translator has been initialized. Engines: [Microsoft]
-2025-04-24 14:19:34.205 [main] WARN  net.gtransagent.GTransAgentServer - GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at **/.skey
-```
 
 ### `Gaminik` 连接方式
 #### 获取访问地址
@@ -188,7 +240,15 @@ AN --> HN[其它翻译引擎]
 
     ```shell
     chmod +x ./gradlew
+
+    # for windows
     ./gradlew clean -x test packageJpackageZipArchive
+
+    # for mac
+    ./gradlew clean -x test packageJpackageZipArchiveForMac
+
+    # for linux
+    ./gradlew clean -x test packageJpackageZipArchiveForLinux
     ```
 - 编译成功的 `zip` 文件保存在 `releases` 目录下
 
@@ -201,6 +261,10 @@ AN --> HN[其它翻译引擎]
 `GTransAgent` 基于 [GPL-3.0 license](./LICENSE).
 
 ## 常见问题
+- 启动后提示 "Failed to bind to address 0.0.0.0/0.0.0.0:6028"
+    原因可能如下:
+    1. 同时启动了两个`GTransAgent`, 请关闭所有的`GTransAgent`再启动.
+    2. `6028`端口被其它软件占用, 可以尝试更换一个新的端口.
 
 - `Gaminik` 连接 `GTransAgent` 失败
 

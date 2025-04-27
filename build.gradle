@@ -179,11 +179,17 @@ tasks.jpackage {
     outputs.dir("$buildDir/$distributionDir")
 
     input = "$buildDir/libs"
-    destination = "$buildDir/$distributionDir"
+
+    if (org.gradle.internal.os.OperatingSystem.current().isMacOsX()) {
+        // mac osx, add subdir
+        destination = "$buildDir/$distributionDir/$archiveBaseName"
+    }else{
+        destination = "$buildDir/$distributionDir"
+    }
 
     appName = "${archiveBaseName}"
     appVersion = "${versionForJpackage}"
-    vendor = "GTransAgent"
+    vendor = "${archiveBaseName}"
 
     type = "app-image"
 
@@ -215,9 +221,10 @@ task copyEditableConfigsToJpackage(type: Copy) {
 task copyEditableConfigsToJpackageForMac(type: Copy) {
     dependsOn("jpackage")
     from('src/main/resources/editable')
-    into "$buildDir/$distributionDir/${archiveBaseName}.app/Contents"
+    into "$buildDir/$distributionDir/${archiveBaseName}"
 }
 
+// for windows
 task packageJpackageZipArchive(type: Zip) {
     dependsOn("copyEditableConfigsToJpackage")
 
@@ -229,6 +236,7 @@ task packageJpackageZipArchive(type: Zip) {
     }
 }
 
+// for mac
 task packageJpackageZipArchiveForMac(type: Zip) {
     dependsOn("copyEditableConfigsToJpackageForMac")
 
@@ -240,6 +248,7 @@ task packageJpackageZipArchiveForMac(type: Zip) {
     }
 }
 
+// for linux
 task packageJpackageZipArchiveForLinux(type: Zip) {
     dependsOn("copyEditableConfigsToJpackage")
 
@@ -251,7 +260,7 @@ task packageJpackageZipArchiveForLinux(type: Zip) {
     }
 }
 
-
+// package jar and zip archive
 task packageJarZipArchive(type: Zip) {
     dependsOn("fatJar")
     dependsOn("copyEditableConfigFile")
@@ -261,6 +270,8 @@ task packageJarZipArchive(type: Zip) {
     destinationDirectory = file("${rootProject}/../releases/")
 
     from("$buildDir/libs") {
+        //add subdir
+        into("$archiveBaseName")
     }
 }
 

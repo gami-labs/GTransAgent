@@ -71,13 +71,89 @@ Configure enabled **translators** before starting `GTransAgent`.
 
 ## Usage
 
-Download `GTransAgent-bin-{version}-{os}-{arch}.zip` from Releases and extract to any directory (avoid non-ASCII paths).
+### [**👍Recommended**] Using the version **with JRE**
+Find the latest `GTransAgent-bin-{version}-{win/mac/linux}-{x86-64/aarch64}.zip` on the `Release` page. This version includes JRE and can run without local Java installation.
 
-- [**👍Recommended**] Files named `GTransAgent-bin-{version}-{os}-{arch}.zip` include JRE - **no** Java installation required.
+#### 1. Download
+Download the `zip` file and copy it to your target directory (avoid non-[ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) paths).
 
-- Files named `GTransAgent-bin-{version}-{os}-jar.zip` require local [Java 8+](https://www.java.com/en/download/).
+#### 2. Extract
+- **Windows**  
+  Right-click the `zip` file and select "Extract All..."
 
-### Configuration
+- **Mac & Linux**  
+  Open Terminal ([How to open or quit Terminal on Mac](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [Opening a terminal on Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), then run:  
+    ```shell
+    cd {directory-containing-zip-file, e.g., /home/ecs-user/}
+    unzip GTransAgent-bin-{xxx}.zip
+    ```
+
+#### 3. Configuration
+Refer to [Configuration](#config)
+
+#### 4. Launch
+- **Windows**  
+  Navigate to the extracted directory and double-click `GTransAgent.exe`.
+
+- **Linux**  
+  In Terminal, run:  
+    ```shell
+    cd GTransAgent
+    ./bin/GTransAgent
+    ```
+
+- **Mac**  
+  In Terminal, run:  
+    ```shell
+    cd GTransAgent
+    ./GTransAgent.app/Contents/MacOS/GTransAgent
+    ```
+
+---
+
+### Using the version **without JRE**
+Find the latest `GTransAgent-bin-{version}-jar.zip` on the `Release` page. This version requires [Java 8](https://www.java.com/en/download/) or higher installed locally. **It offers broader compatibility** and can run on **all platforms supported by Java**.  
+
+#### 1. Download
+Download the `zip` file and copy it to your target directory (avoid non-[ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) paths).
+
+#### 2. Extract
+Same as the version with JRE.
+
+#### 3. Configuration
+Refer to [Configuration](#config)
+
+#### 4. Launch
+- **Windows**  
+  Navigate to the extracted directory, right-click in an empty area, select "Open in Terminal", then run:  
+    ```shell
+    .\run.bat
+    ```
+
+- **Mac & Linux**  
+  In Terminal, run:  
+    ```shell
+    cd GTransAgent
+    ./run.sh
+    ```
+
+---
+
+### Successful Launch
+After launching, the following information will be displayed, indicating a successful launch:
+```shell
+Found config file in path: C:\Users\xxx\Downloads\GTransAgent, all lookup paths: [C:\Users\xxx\Downloads\GTransAgent, C:\Users\xxx\Downloads]
+GTransAgent Version: v1.0, BuildNumber: 10
+The Ollama Translator has been initialized. Engines: [Gemma 3 1B, Gemma 3 4B QAT, Qwen 2.5 1.5B]
+The GoogleExperimental Translator has been initialized. Engines: [GoogleExperimental]
+The MicrosoftExperimental Translator has been initialized. Engines: [MicrosoftExperimental]
+The TencentExperimental Translator has been initialized. Engines: [TencentExperimental]
+The YandexExperimental Translator has been initialized. Engines: [YandexExperimental]
+GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at C:\Users\xxx\Downloads\GTransAgent\.skey
+```
+
+
+### Configuration <a id="config"></a>
 
 1. Edit `config.yaml` in root directory. Add enabled translators under `enablesTranslators`, [YAML Syntax](https://docs.ansible.com/ansible/latest/reference_appendices/YAMLSyntax.html):
 
@@ -101,24 +177,6 @@ Download `GTransAgent-bin-{version}-{os}-{arch}.zip` from Releases and extract t
     > **Note:** Configuration formats vary per translator.
 
 3. If `Gaminik` runs on another device, configure firewall to allow TCP access on specified port. [Firewall Guide](https://www.wikihow.com/Open-Ports)
-
-### Launch
-
-#### With JRE
-Double-click `GTransAgent.exe`
-
-#### Without JRE
-- Windows: Execute `run.bat`
-- macOS/Linux: Run `./run.sh`
-
-#### Successful Launch
-Console shows:
-
-```console
-2025-04-24 14:19:33.839 [main] WARN  net.gtransagent.AgentFactory - The Ollama Translator has been initialized. Engines: [Gemma 3 1B, Gemma 3 4B, Qwen 2.5 0.5B, Qwen 2.5 1.5B, Qwen 2.5 4B]
-2025-04-24 14:19:33.846 [main] WARN  net.gtransagent.AgentFactory - The Microsoft Translator has been initialized. Engines: [Microsoft]
-2025-04-24 14:19:34.205 [main] WARN  net.gtransagent.GTransAgentServer - GTransAgent is listening on port 6028. The service can be accessed at http://localhost:6028, with the security key located in the file at **/.skey
-```
 
 ### Connecting from Gaminik
 #### Access URL
@@ -171,6 +229,11 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
 `GTransAgent` is released under the [GPL-3.0 license](./LICENSE).
 
 ## FAQ
+
+- After launching, if you see the error **"Failed to bind to address 0.0.0.0/0.0.0.0:6028"**:  
+    This may occur if: 
+    1. Multiple instances of `GTransAgent` are running simultaneously. Close all `GTransAgent` processes and restart.
+    2. **Port 6028** is occupied by another application. Try switching to a different port.
 
 - **`Gaminik` fails to connect to `GTransAgent`**
 
