@@ -170,6 +170,8 @@ AN --> HN[其它翻译引擎]
 
 > 查看 [Java 安装指南](https://www.java.com/zh-cn/download/help/windows_manual_download.html)
 
+查看已安装`Java`版本方式(在终端内执行): ` java -version `, 如果输出 ` java version "x.x.x" ` 则表明已经成功安装.
+
 #### 1. 下载
 下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非 [ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) 字符)
 

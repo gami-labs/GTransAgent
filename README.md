@@ -158,6 +158,8 @@ Find the latest `GTransAgent-bin-{version}-jar.zip` on the `Release` page. This 
 
 > View [Installing Java](https://www.java.com/en/download/help/index_installing.html)
 
+To check the installed Java version (execute in the terminal): ` java -version `. If the output shows ` java version "x.x.x" `, it indicates that Java has been successfully installed.
+
 #### 1. Download
 Download the `zip` file and copy it to your target directory (avoid non-[ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) paths).
 
