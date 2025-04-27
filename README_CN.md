@@ -139,6 +139,7 @@ AN --> HN[其它翻译引擎]
 在终端中继续输入并执行:
     ```shell
     cd GTransAgent
+    chmod +x ./run.sh
     ./run.sh
     ```
 

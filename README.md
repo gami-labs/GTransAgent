@@ -134,6 +134,7 @@ Refer to [Configuration](#config)
   In Terminal, run:  
     ```shell
     cd GTransAgent
+    chmod +x ./run.sh
     ./run.sh
     ```
 
