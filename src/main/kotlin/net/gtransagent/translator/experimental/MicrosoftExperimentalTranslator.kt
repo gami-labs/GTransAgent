@@ -34,6 +34,8 @@ class MicrosoftExperimentalTranslator : SingleInputTranslator() {
     companion object {
         const val NAME = "MicrosoftExperimental"
 
+        private val authTokenLock = Any()
+
         val supportedEngines = listOf(PublicConfig.TranslateEngine().apply {
             code = "microsoft_experimental"
             name = NAME
@@ -122,19 +124,21 @@ class MicrosoftExperimentalTranslator : SingleInputTranslator() {
     }
 
     private fun getAuthToken(): AuthToken {
-        if (this.authToken == null) {
-            return requestMsAuth()
+        synchronized(authTokenLock){
+            if (this.authToken == null) {
+                return requestMsAuth()
+            }
+            if (this.authToken!!.tokenExp <= System.currentTimeMillis()) {
+                return requestMsAuth()
+            }
+            return this.authToken!!
         }
-        if (this.authToken!!.tokenExp <= System.currentTimeMillis()) {
-            return requestMsAuth()
-        }
-        return this.authToken!!
     }
 
     private fun langConvert(origin: String): String {
-        if (origin == "zh-CN") {
+        if (origin == "zh-CN" || origin == "zh_Hans") {
             return "zh-Hans"
-        } else if (origin == "zh-TW") {
+        } else if (origin == "zh-TW" || origin == "zh_Hant") {
             return "zh-Hant"
         }
         return origin

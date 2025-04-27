@@ -78,9 +78,9 @@ class MicrosoftTranslator : FullBatchTranslator() {
     }
 
     private fun langConvert(origin: String): String {
-        if (origin == "zh-CN") {
+        if (origin == "zh-CN" || origin == "zh_Hans") {
             return "zh-Hans"
-        } else if (origin == "zh-TW") {
+        } else if (origin == "zh-TW" || origin == "zh_Hant") {
             return "zh-Hant"
         }
         return origin

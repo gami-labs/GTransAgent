@@ -54,7 +54,7 @@ object TransDataConverter {
                 init(Cipher.DECRYPT_MODE, SecretKeySpec(key, "AES"), IvParameterSpec(iv))
             }.doFinal(ciphertext)
         } catch (e: Exception) {
-            logger.error("decrypt error: ${e.message}", e)
+            logger.error("decrypt error: ${e.message}")
             throw e
         }
     }

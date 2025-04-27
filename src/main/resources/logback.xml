@@ -56,7 +56,7 @@
     </appender>
 
 
-    <root level="DEBUG">
+    <root level="INFO">
         <appender-ref ref="CONSOLE"/>
         <appender-ref ref="ASYNC-ALL"/>
         <appender-ref ref="ASYNC-ERROR"/>

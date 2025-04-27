@@ -48,7 +48,7 @@ abstract class TranslatorTest {
                 translate(engineCode)
                 delay(getEachTranslationWaitTime())
                 translateTexts(
-                    engineCode, "en", "zh-CN", listOf(
+                    engineCode, "en", "zh_Hans", listOf(
                         "READ FOR FREE EVERY DAY",
                         "WUF",
                         "appyEnding,",
@@ -128,7 +128,7 @@ abstract class TranslatorTest {
             val begin = System.currentTimeMillis()
             val requestId = "e${System.currentTimeMillis()}"
 
-            val targetLang = "zh-CN"
+            val targetLang = "zh_Hans"
             val isAutoTrans = true
             val langItems = listOf(
                 LangItem.newBuilder().setInputLang("en").addInputItemList(

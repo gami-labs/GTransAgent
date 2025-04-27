@@ -34,6 +34,8 @@ class YandexExperimentalTranslator : LanguageGroupedTranslator() {
     companion object {
         const val NAME = "YandexExperimental"
 
+        private val sidTokenLock = Any()
+
         val supportedEngines = listOf(PublicConfig.TranslateEngine().apply {
             code = "yandex_experimental"
             name = NAME
@@ -118,13 +120,15 @@ class YandexExperimentalTranslator : LanguageGroupedTranslator() {
     }
 
     private fun getSid(): SidToken {
-        if (this.sidToken == null) {
-            return requestSid()
+        synchronized(sidTokenLock) {
+            if (this.sidToken == null) {
+                return requestSid()
+            }
+            if (this.sidToken!!.sidExp <= System.currentTimeMillis()) {
+                return requestSid()
+            }
+            return this.sidToken!!
         }
-        if (this.sidToken!!.sidExp <= System.currentTimeMillis()) {
-            return requestSid()
-        }
-        return this.sidToken!!
     }
 
     @Throws(Exception::class)

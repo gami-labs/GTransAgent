@@ -108,11 +108,7 @@ object AgentFactory {
     @Throws(Exception::class)
     private fun initPublicConfig(inputStream: InputStream) {
         inputStream.use {
-            try {/*                val constructor: Constructor = Constructor(PublicConfig::class.java, LoaderOptions())
-                                val carDescription = TypeDescription(PublicConfig::class.java)
-                                carDescription.addPropertyParameters("translators", PublicConfig.TranslatorDefine::class.java)
-                                constructor.addTypeDescription(carDescription)
-                                val yaml = Yaml(constructor)*/
+            try {
                 publicConfig = yaml.loadAs(it, PublicConfig::class.java)
                 logger.info("load public config success")
             } catch (e: Exception) {

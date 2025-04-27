@@ -85,7 +85,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
     override fun translate(request: TranslateRequest, responseObserver: StreamObserver<TranslateResponse>) {
         logger.info("Translate request: ${request.requestId}")
 
-        var beginTime = System.currentTimeMillis()
+        val beginTime = System.currentTimeMillis()
         val engineCode = request.engineCode
         val translator = AgentFactory.getTranslatorByEngineKey(engineCode)
         if (translator == null) {
