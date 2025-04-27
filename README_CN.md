@@ -75,8 +75,8 @@ AN --> HN[其它翻译引擎]
 
 ## `GTransAgent` 用法
 
-### [**👍推荐**] 使用带 `JRE` 版本
-在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-{win/mac/linux}-{x86-64/aarch64}.zip`, 即为带 `JRE` 版本, 无需本地安装 `Java` 即可运行.
+### 使用带 `JRE` 版本
+在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-{win/linux}-{x86-64/aarch64}.zip`, 即为带 `JRE` 版本, 无需本地安装 `Java` 即可运行.
 
 #### 1. 下载
 下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非ASCII字符)
@@ -85,7 +85,7 @@ AN --> HN[其它翻译引擎]
 - Windows
 在`zip`文件上点击右键, 选择"全部解压缩..."
 
-- Mac & Linux
+- Linux
 打开终端([在 Mac 上打开或退出“终端”](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [Opening a terminal On Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), 输入并执行:
 
     ```shell
@@ -108,15 +108,10 @@ AN --> HN[其它翻译引擎]
     ./bin/GTransAgent
     ```
 
-- Mac
-在终端中继续输入并执行:
-    ```shell
-    cd GTransAgent
-    ./GTransAgent.app/Contents/MacOS/GTransAgent
-    ```
-
 ### 使用不带 `JRE` 版本
-在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-jar.zip`, 即为带 **不带JRE** 版本, 需要本地自带 [Java 8](https://www.java.com/en/download/) 及以上版本才可运行. **兼容性更广**, 所有`Java`支持的平台都可以运行.
+在 `Release` 页面找到最新版 `GTransAgent-bin-{version}-jar.zip`, 即为带 **不带JRE** 版本, 需要本地自带 [Java 8](https://www.java.com/en/download/) 及以上版本才可运行. **兼容性更广**, 所有`Java`支持的平台都可以运行(包括 Mac).
+
+> 查看 [Java 安装指南](https://www.java.com/zh-cn/download/help/windows_manual_download.html)
 
 #### 1. 下载
 下载 `zip` 文件, 并复制到要运行的目录(目录名不要包含非 [ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) 字符)
@@ -245,8 +240,8 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
     # for windows
     ./gradlew clean -x test packageJpackageZipArchive
 
-    # for mac
-    ./gradlew clean -x test packageJpackageZipArchiveForMac
+    <!-- # for mac
+    ./gradlew clean -x test packageJpackageZipArchiveForMac -->
 
     # for linux
     ./gradlew clean -x test packageJpackageZipArchiveForLinux

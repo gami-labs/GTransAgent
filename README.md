@@ -71,8 +71,8 @@ Configure enabled **translators** before starting `GTransAgent`.
 
 ## Usage
 
-### [**👍Recommended**] Using the version **with JRE**
-Find the latest `GTransAgent-bin-{version}-{win/mac/linux}-{x86-64/aarch64}.zip` on the `Release` page. This version includes JRE and can run without local Java installation.
+### Using the version **with JRE**
+Find the latest `GTransAgent-bin-{version}-{win/linux}-{x86-64/aarch64}.zip` on the `Release` page. This version includes JRE and can run without local Java installation.
 
 #### 1. Download
 Download the `zip` file and copy it to your target directory (avoid non-[ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) paths).
@@ -81,7 +81,7 @@ Download the `zip` file and copy it to your target directory (avoid non-[ASCII](
 - **Windows**  
   Right-click the `zip` file and select "Extract All..."
 
-- **Mac & Linux**  
+- **Linux**  
   Open Terminal ([How to open or quit Terminal on Mac](https://support.apple.com/guide/terminal/apd5265185d-f365-44cb-8b09-71a064a42125/mac), [Opening a terminal on Ubuntu](https://ubuntu.com/tutorials/command-line-for-beginners#3-opening-a-terminal)), then run:  
     ```shell
     cd {directory-containing-zip-file, e.g., /home/ecs-user/}
@@ -102,17 +102,12 @@ Refer to [Configuration](#config)
     ./bin/GTransAgent
     ```
 
-- **Mac**  
-  In Terminal, run:  
-    ```shell
-    cd GTransAgent
-    ./GTransAgent.app/Contents/MacOS/GTransAgent
-    ```
-
 ---
 
 ### Using the version **without JRE**
-Find the latest `GTransAgent-bin-{version}-jar.zip` on the `Release` page. This version requires [Java 8](https://www.java.com/en/download/) or higher installed locally. **It offers broader compatibility** and can run on **all platforms supported by Java**.  
+Find the latest `GTransAgent-bin-{version}-jar.zip` on the `Release` page. This version requires [Java 8](https://www.java.com/en/download/) or higher installed locally. **It offers broader compatibility** and can run on **all platforms supported by Java** (include Mac).  
+
+> View [Installing Java](https://www.java.com/en/download/help/index_installing.html)
 
 #### 1. Download
 Download the `zip` file and copy it to your target directory (avoid non-[ASCII](https://www.w3schools.com/charsets/ref_html_ascii.asp) paths).
