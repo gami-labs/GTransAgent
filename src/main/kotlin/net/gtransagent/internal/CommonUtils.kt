@@ -6,6 +6,9 @@ import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
 import io.github.haibiiin.json.repair.JSONRepair
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.InetAddress
+import java.net.NetworkInterface
+import kotlin.collections.iterator
 
 
 object CommonUtils {
@@ -104,5 +107,27 @@ object CommonUtils {
         }
     }
 
+    /**
+     * get local ip address
+     */
+    fun getLocalIpAddress(): String? {
+        try {
+            val interfaces = NetworkInterface.getNetworkInterfaces()
+            for (networkInterface in interfaces) {
+                val addresses = networkInterface.inetAddresses
+                for (address in addresses) {
+                    if (!address.isLoopbackAddress && address is InetAddress) {
+                        val hostAddress = address.hostAddress
+                        if (hostAddress.indexOf(':') < 0) { // 排除 IPv6 地址
+                            return hostAddress
+                        }
+                    }
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+        }
+        return null
+    }
 
 }

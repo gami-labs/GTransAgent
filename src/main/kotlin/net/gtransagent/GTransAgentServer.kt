@@ -6,6 +6,7 @@ import io.grpc.health.v1.HealthCheckResponse.ServingStatus
 import io.grpc.protobuf.services.ProtoReflectionServiceV1
 import io.grpc.protobuf.services.HealthStatusManager
 import net.gtransagent.core.SecurityKeyAccessor
+import net.gtransagent.internal.CommonUtils
 import net.gtransagent.internal.Constant
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -49,7 +50,16 @@ object GTransAgentServer {
         val server =
             Grpc.newServerBuilderForPort(port, InsecureServerCredentials.create()).addService(GTransAgentGrpc())
                 .addService(ProtoReflectionServiceV1.newInstance()).addService(health.healthService).build().start()
-        logger.warn("GTransAgent is listening on port $port. The service can be accessed at http://localhost:$port, with the security key located in the file at ${SecurityKeyAccessor.getFilePath()}")
+
+        val localIp = CommonUtils.getLocalIpAddress()
+
+        val accessUrl = if (localIp != null) {
+            "http://localhost:$port or http://$localIp:$port"
+        } else {
+            "http://localhost:$port"
+        }
+        logger.warn("GTransAgent is listening on port $port. The service can be accessed at $accessUrl, with the security key located in the file at ${SecurityKeyAccessor.getFilePath()}")
+
         Runtime.getRuntime().addShutdownHook(object : Thread() {
             override fun run() {
                 // Start graceful shutdown
