@@ -45,8 +45,24 @@ abstract class TranslatorTest {
     fun translate() {
         getTranslationEngines().forEach { engineCode ->
             runBlocking {
+                translateTexts(
+                    engineCode,
+                    "en",
+                    "zh_Hans",
+                    listOf(". Supports invoking privately deployed LLMs like Qwen-Turbo , Gemma 3 ... (via ol1ama ).")
+                )
+                delay(getEachTranslationWaitTime())
+                translateTexts(
+                    engineCode,
+                    "en",
+                    "vi",
+                    listOf(". Supports all mainstream translation engines (requires self-applied apikey ).")
+                )
+                delay(getEachTranslationWaitTime())
+
                 translate(engineCode)
                 delay(getEachTranslationWaitTime())
+
                 translateTexts(
                     engineCode, "en", "zh_Hans", listOf(
                         "READ FOR FREE EVERY DAY",

@@ -101,7 +101,7 @@ class GoogleExperimentalTranslator : SingleInputTranslator() {
                 val end = System.currentTimeMillis()
                 val responseStr = response.body!!.string()
                 var result = paramResultPairsV1(responseStr)
-                if (!result.isNullOrBlank()) {
+                if (result.isNullOrBlank()) {
                     result = paramResultPairsV2(responseStr)
                 }
                 logger.info("Google Experimental translateTexts end, requestId:$requestId, time:${end - begin}, result:${result}, input:${input}, target:${targetLang}")
@@ -120,7 +120,8 @@ class GoogleExperimentalTranslator : SingleInputTranslator() {
             }
         } catch (e: Exception) {
             logger.warn(
-                "Google Experimental translation failure, requestId:$requestId, input:${input}, target:${targetLang}, error:${e}", e
+                "Google Experimental translation failure, requestId:$requestId, input:${input}, target:${targetLang}, error:${e}",
+                e
             )
             throw e
         }
@@ -146,8 +147,19 @@ class GoogleExperimentalTranslator : SingleInputTranslator() {
             return null
         }
 
-        val item = (resultList.get(0) as JSONArray)
-        val result = item[0].toString()
+        val result = resultList.map {
+            val item = it as JSONArray
+            if (item.length() <= 0 || item.get(0) == null) {
+                return@map ""
+            }
+            val result = item[0].toString()
+            return@map result
+        }.joinToString(" ")
+
+        /*        val item = (resultList.get(0) as JSONArray)
+                val result = item[0].toString()
+        */
+
         return result
     }
 
@@ -171,6 +183,18 @@ class GoogleExperimentalTranslator : SingleInputTranslator() {
             return null
         }
 
+        /*
+        val resultStr = second.map {
+                    val item = it as JSONArray
+                    if (item.length() <= 0 || item.get(0) == null) {
+                        return@map ""
+                    }
+                    val result = item[0].toString()
+                    return@map result
+                }.joinToString(" ")
+       */
+
+        /* */
         val third = (second.get(0) as JSONArray)
         if (third.length() <= 1) {
             return null
