@@ -150,6 +150,7 @@ class VolcengineTranslator : FullBatchTranslator() {
         targetLang: String,
         inputs: List<String>,
         sourceLang: String?,
+        isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>?,
         glossaryIgnoreCase: Boolean
     ): List<String> {

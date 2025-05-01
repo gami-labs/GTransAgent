@@ -45,8 +45,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
     }
 
     override fun usabilityCheck(
-        request: UsabilityCheckRequest,
-        responseObserver: StreamObserver<UsabilityCheckResponse>
+        request: UsabilityCheckRequest, responseObserver: StreamObserver<UsabilityCheckResponse>
     ) {
         val responseBuilder = UsabilityCheckResponse.newBuilder()
         responseBuilder.setCt(request.ct)
@@ -67,7 +66,13 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
                 .addInputItemList(InputItem.newBuilder().setId(1).setInput("Hi").build()).build()
         )
         translator.translate(
-            System.currentTimeMillis().toString(), "es", request.engineCode, false, langTransItems
+            System.currentTimeMillis().toString(),
+            "es",
+            request.engineCode,
+            false,
+            langTransItems,
+            sourceLang = "en",
+            false,
         ) { requestId, isAllItemTransFinished, transResultItems, status ->
             if (status != null) {
                 logger.error("Translate error: ${status.code} ${status.description}")
@@ -84,7 +89,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
     }
 
     override fun translate(request: TranslateRequest, responseObserver: StreamObserver<TranslateResponse>) {
-        logger.info("Translate request: ${request.requestId}")
+        logger.info("Translate request: ${request.requestId}, engineCode: ${request.engineCode}, targetLang: ${request.targetLang}, sourceLang: ${request.sourceLang}, isSourceLanguageUserSetToAuto: ${request.isSourceLanguageUserSetToAuto}, isAutoTrans: ${request.isAutoTrans}, inputDataList: ${request.inputDataListList.size}")
 
         val beginTime = System.currentTimeMillis()
         val engineCode = request.engineCode
@@ -102,8 +107,16 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             responseObserver.onError(StatusRuntimeException(Status.PERMISSION_DENIED))
             return
         }
+        logger.info("Translate request: ${request.requestId}, inputs: ${inputs.joinToString(",") { it.toString() }}")
+
         translator.translate(
-            request.requestId, request.targetLang, request.engineCode, request.isAutoTrans, inputs
+            request.requestId,
+            request.targetLang,
+            request.engineCode,
+            request.isAutoTrans,
+            inputs,
+            sourceLang = request.sourceLang,
+            isSourceLanguageUserSetToAuto = request.isSourceLanguageUserSetToAuto
         ) { requestId, isAllItemTransFinished, transResultItems, status ->
             if (status != null) {
                 logger.error("Translate error: ${status.code} ${status.description}")

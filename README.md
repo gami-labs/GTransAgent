@@ -305,7 +305,7 @@ See [CONTRIBUTING.md](./CONTRIBUTING.md) for code submission guidelines.
 
 ## License
 
-`GTransAgent` is released under the [GPL-3.0 license](./LICENSE).
+`GTransAgent` is released under the [AGPL-3.0 license](./LICENSE).
 
 
 ## FAQ

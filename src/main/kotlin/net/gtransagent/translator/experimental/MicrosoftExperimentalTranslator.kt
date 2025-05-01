@@ -161,7 +161,7 @@ class MicrosoftExperimentalTranslator : SingleInputTranslator() {
 
             val urlBuilder = url.toHttpUrlOrNull()!!.newBuilder()
             urlBuilder.addQueryParameter("api-version", "3.0")
-            urlBuilder.addQueryParameter("from", "")
+            urlBuilder.addQueryParameter("from", "") //auto
             urlBuilder.addQueryParameter("to", langConvert(targetLang))
 
             val jsonMap = mutableListOf<Map<String, String>>()

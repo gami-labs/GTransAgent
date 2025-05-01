@@ -120,7 +120,14 @@ abstract class TranslatorTest {
 
             var finished = 0
             translator.translate(
-                requestId, target, engineCode, isAutoTrans, langItems, fun(
+                requestId,
+                target,
+                engineCode,
+                isAutoTrans,
+                langItems,
+                sourceLang = srcLang,
+                isSourceLanguageUserSetToAuto = false,
+                fun(
                     requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
                 ) {
                     val resultStr = resultItems.joinToString(",") {
@@ -173,7 +180,14 @@ abstract class TranslatorTest {
 
             var finished = 0
             translator.translate(
-                requestId, targetLang, engineCode, isAutoTrans, langItems, fun(
+                requestId,
+                targetLang,
+                engineCode,
+                isAutoTrans,
+                langItems,
+                sourceLang = "en",
+                isSourceLanguageUserSetToAuto = true,
+                fun(
                     requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
                 ) {
                     val resultStr = resultItems.joinToString(",") {

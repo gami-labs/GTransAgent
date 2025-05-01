@@ -152,10 +152,13 @@ class YandexExperimentalTranslator : LanguageGroupedTranslator() {
             urlBuilder.addQueryParameter("srv", "tr-url-widget")
             urlBuilder.addQueryParameter("id", "$sid-0-0")
             urlBuilder.addQueryParameter("format", "html")
+
+            // not support auto
             urlBuilder.addQueryParameter(
                 "lang",
                 "${CommonUtils.getLang(sourceLang)}-${CommonUtils.getLang(targetLang)}"
             )
+
             inputs.forEach {
                 urlBuilder.addQueryParameter("text", it)
             }

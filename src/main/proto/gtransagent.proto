@@ -49,7 +49,7 @@ message AgentInfoResponse {
   int64 agentVersionNumber = 1; // agent version number, e.g. 1000001
   string agentVersion = 2;  // agent version, e.g. "1.0"
   repeated TranslateEngine engines = 3; //agent support engines, e.g. "gemma-3-4b"
-  bool keyVerificationResult =4;
+  bool keyVerificationResult = 4;
 }
 
 // glossary words message
@@ -67,17 +67,20 @@ message InputItem {
 }
 
 message LangItem {
-  string inputLang = 1; // input language, e.g. en, may be "auto"
+  string inputLang = 1; // input language, e.g. en, zh_Hans
   repeated InputItem inputItemList = 2;
 }
 
 // translate request message
 message TranslateRequest {
   string requestId = 1; // request id
-  string targetLang = 2; // target language, e.g. zh-CN
+  string targetLang = 2; // target language, e.g. zh_Hans, en
   string engineCode = 3; // engine code, e.g. "gemma-3-4b", must be agent supported engine
   repeated string inputDataList = 4;  // input data, encrypted
   bool isAutoTrans = 5; // is auto translate
+  // When the user selects "auto" as the source language during translation, sourceLang is set to the language automatically detected based on the content; when a specific language is selected as the source language, sourceLang is set to that language.
+  string sourceLang = 6; // source language, e.g. zh_Hans, en
+  bool isSourceLanguageUserSetToAuto = 7; // true if user selects "auto" as the source language
 }
 
 message ResultItem {

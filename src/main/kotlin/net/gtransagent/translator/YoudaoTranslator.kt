@@ -101,6 +101,7 @@ class YoudaoTranslator : FullBatchTranslator() {
         targetLang: String,
         inputs: List<String>,
         sourceLang: String?,
+        isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>?,
         glossaryIgnoreCase: Boolean
     ): List<String> {
@@ -118,7 +119,13 @@ class YoudaoTranslator : FullBatchTranslator() {
             }
 
             val salt = UUID.randomUUID().toString()
-            builder.add("from", "auto")
+            builder.add(
+                "from", if (isSourceLanguageUserSetToAuto) {
+                    "auto"
+                } else {
+                    convertLang(sourceLang ?: "auto")
+                }
+            )
             builder.add("to", target)
             builder.add("signType", "v3")
             val curtime = (System.currentTimeMillis() / 1000).toString()

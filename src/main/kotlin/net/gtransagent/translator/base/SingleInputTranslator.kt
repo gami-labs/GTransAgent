@@ -101,6 +101,8 @@ abstract class SingleInputTranslator : ITranslator {
         engineCode: String,
         isAutoTrans: Boolean,
         langItems: List<LangItem>,
+        sourceLang: String, // source language, e.g. zh_Hans, en, when isSourceLanguageSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
+        isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         callback: (
             requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
         ) -> Unit

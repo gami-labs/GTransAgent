@@ -339,7 +339,7 @@ GTransAgent is listening on port 6028. The service can be accessed at http://loc
 
 ## 许可协议
 
-`GTransAgent` 基于 [GPL-3.0 license](./LICENSE).
+`GTransAgent` 基于 [AGPL-3.0 license](./LICENSE).
 
 
 

@@ -28,6 +28,8 @@ abstract class FullBatchTranslator : ITranslator {
         engineCode: String,
         isAutoTrans: Boolean,
         langItems: List<LangItem>,
+        sourceLang: String, // source language, e.g. zh_Hans, en, when isSourceLanguageSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
+        isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         callback: (
             requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
         ) -> Unit
@@ -52,12 +54,12 @@ abstract class FullBatchTranslator : ITranslator {
             }
         }
 
-        // If all input items share the same source language, set sourceLang to that language. Otherwise, set sourceLang to null.
-        val srcLang: String? = if (langItems.size == 1) {
-            langItems.first().inputLang
-        } else {
-            null
-        }
+        /*        // If all input items share the same source language, set sourceLang to that language. Otherwise, set sourceLang to null.
+                val srcLang: String? = if (langItems.size == 1) {
+                    langItems.first().inputLang
+                } else {
+                    null
+                }*/
 
         val glossaryIgnoreCase: Boolean = langItems.first().inputItemListList.first().glossaryIgnoreCase
         val glossaryWords = mutableListOf<Pair<String, String>>()
@@ -73,7 +75,15 @@ abstract class FullBatchTranslator : ITranslator {
 
         logger.info("${getName()} translate $requestId, targetLang:$targetLang, count: ${inputs.size}")
         try {
-            val results = sendRequest(requestId, targetLang, inputs, srcLang, glossaryWords, glossaryIgnoreCase)
+            val results = sendRequest(
+                requestId,
+                targetLang,
+                inputs,
+                sourceLang,
+                isSourceLanguageUserSetToAuto,
+                glossaryWords,
+                glossaryIgnoreCase
+            )
 
             val resultItems = mutableListOf<ResultItem>()
 
@@ -123,6 +133,7 @@ abstract class FullBatchTranslator : ITranslator {
         targetLang: String,
         inputs: List<String>,
         sourceLang: String? = null,
+        isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>? = null,
         glossaryIgnoreCase: Boolean = false
     ): List<String>

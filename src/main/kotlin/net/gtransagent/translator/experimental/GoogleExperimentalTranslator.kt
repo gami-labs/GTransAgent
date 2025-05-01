@@ -85,7 +85,8 @@ class GoogleExperimentalTranslator : SingleInputTranslator() {
             val urlBuilder = url.toHttpUrlOrNull()!!.newBuilder()
             urlBuilder.addQueryParameter("client", "gtx")
             urlBuilder.addQueryParameter("dt", "t")
-            urlBuilder.addQueryParameter("sl", CommonUtils.getLang(sourceLang))
+            //urlBuilder.addQueryParameter("sl", CommonUtils.getLang(sourceLang))
+            urlBuilder.addQueryParameter("sl", "auto")
             urlBuilder.addQueryParameter("tl", CommonUtils.getLang(targetLang))
             urlBuilder.addQueryParameter("q", input)
 
