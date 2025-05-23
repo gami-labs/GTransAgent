@@ -2,4 +2,7 @@
 
 # DeepL API Key
 # https://developers.deepl.com/docs
+
+# https://api.deepl.com/v2/translate or https://api-free.deepl.com/v2/translate
+url: https://api-free.deepl.com/v2/translate
 apiKey:

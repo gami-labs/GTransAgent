@@ -2,20 +2,21 @@ package net.gtransagent.translator
 
 import net.gtransagent.translator.base.ITranslator
 
-class DeepLTranslatorTest : TranslatorTest() {
+class UnTsDeepLXTranslatorTest : TranslatorTest() {
+
     override fun onlyUseCommonLanguage(): Boolean {
         return true
     }
 
     override fun getTranslatorCode(): String {
-        return DeepLTranslator.NAME
+        return UnTsDeepLXTranslator.NAME
     }
 
     override fun getITranslator(): ITranslator {
-        return DeepLTranslator()
+        return UnTsDeepLXTranslator()
     }
 
     override fun getTranslationEngines(): List<String> {
-        return DeepLTranslator.supportedEngines.map { it.code }
+        return UnTsDeepLXTranslator.supportedEngines.map { it.code }
     }
 }

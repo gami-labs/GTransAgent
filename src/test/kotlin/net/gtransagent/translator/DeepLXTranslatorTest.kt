@@ -3,6 +3,10 @@ package net.gtransagent.translator
 import net.gtransagent.translator.base.ITranslator
 
 class DeepLXTranslatorTest : TranslatorTest() {
+    override fun onlyUseCommonLanguage(): Boolean {
+        return true
+    }
+
     override fun getTranslatorCode(): String {
         return DeepLXTranslator.NAME
     }

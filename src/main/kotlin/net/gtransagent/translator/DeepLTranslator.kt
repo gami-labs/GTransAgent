@@ -18,7 +18,6 @@ class DeepLTranslator : FullBatchTranslator() {
     private val gson = Gson()
 
     companion object {
-        private const val URL = "https://api.deepl.com/v2/translate"
 
         const val NAME = "Deepl"
 
@@ -103,6 +102,7 @@ class DeepLTranslator : FullBatchTranslator() {
         )
     }
 
+    private lateinit var url: String
     private lateinit var apiKey: String
 
     override fun getName(): String {
@@ -131,6 +131,12 @@ class DeepLTranslator : FullBatchTranslator() {
 
 
     override fun init(configs: Map<*, *>): Boolean {
+        if ((configs["url"] as String?).isNullOrBlank()) {
+            logger.error("DeeplTranslator init failed, DeepL url not found. Please set url in DeepL.yaml.")
+            return false
+        }
+        url = (configs["url"] as String)
+
         val fileApiKey = (configs["apiKey"] as String?)
 
         apiKey = if (fileApiKey.isNullOrBlank()) {
@@ -184,7 +190,7 @@ class DeepLTranslator : FullBatchTranslator() {
             val body: RequestBody = payload.toRequestBody("application/json; charset=utf-8".toMediaType())
 
             val request =
-                Request.Builder().url(URL).addHeader("Authorization", "DeepL-Auth-Key $apiKey").post(body).build()
+                Request.Builder().url(url).addHeader("Authorization", "DeepL-Auth-Key $apiKey").post(body).build()
 
             val response = client.newCall(request).execute()
             if (response.isSuccessful && Objects.nonNull(response.body)) {

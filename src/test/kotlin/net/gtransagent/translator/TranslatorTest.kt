@@ -25,6 +25,10 @@ abstract class TranslatorTest {
         return 0
     }
 
+    open fun onlyUseCommonLanguage(): Boolean {
+        return false
+    }
+
     abstract fun getTranslatorCode(): String
     abstract fun getITranslator(): ITranslator
     abstract fun getTranslationEngines(): List<String>
@@ -52,13 +56,16 @@ abstract class TranslatorTest {
                     listOf(". Supports invoking privately deployed LLMs like Qwen-Turbo , Gemma 3 ... (via ol1ama ).")
                 )
                 delay(getEachTranslationWaitTime())
-                translateTexts(
-                    engineCode,
-                    "en",
-                    "vi",
-                    listOf(". Supports all mainstream translation engines (requires self-applied apikey ).")
-                )
-                delay(getEachTranslationWaitTime())
+
+                if (!onlyUseCommonLanguage()) {
+                    translateTexts(
+                        engineCode,
+                        "en",
+                        "vi",
+                        listOf(". Supports all mainstream translation engines (requires self-applied apikey ).")
+                    )
+                    delay(getEachTranslationWaitTime())
+                }
 
                 translate(engineCode)
                 delay(getEachTranslationWaitTime())

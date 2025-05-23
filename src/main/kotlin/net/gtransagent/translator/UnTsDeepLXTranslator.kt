@@ -6,31 +6,30 @@ import net.gtransagent.core.PublicConfig
 import net.gtransagent.internal.CommonUtils
 import net.gtransagent.translator.base.SingleInputTranslator
 import okhttp3.*
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.net.URLDecoder
+import java.net.URLEncoder
 import java.util.*
-
 
 /**
  *
- * DeepLX
- * https://deeplx.owo.network/
+ * UnTsDeepLX
+ * An unofficial but powerful and easy-to-use yet free DeepL API client for Node.js using DeepL by porting OwO-Network/UnTsDeepLX.
+ * https://github.com/un-ts/deeplx
  *
  */
-class DeepLXTranslator : SingleInputTranslator() {
+class UnTsDeepLXTranslator : SingleInputTranslator() {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
 
     private val gson = Gson()
 
     companion object {
-        const val NAME = "DeepLX"
+        const val NAME = "UnTsDeepLX"
 
-        const val API = "/v2/translate"
 
         val supportedEngines = listOf(PublicConfig.TranslateEngine().apply {
-            code = "deeplx"
+            code = "untsdeeplx"
             name = NAME
         })
 
@@ -139,16 +138,21 @@ class DeepLXTranslator : SingleInputTranslator() {
 
     override fun init(configs: Map<*, *>): Boolean {
         if ((configs["url"] as String?).isNullOrBlank()) {
-            logger.error("DeepLXTranslator init failed, DeepLX url not found. Please set url in DeepLX.yaml.")
+            logger.error("UnTsDeepLXTranslator init failed, UnTsDeepLX url not found. Please set url in UnTsDeepLX.yaml.")
             return false
         }
         url = (configs["url"] as String)
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
 
-        logger.info("DeepLXTranslator init success, supportedEngines: $supportedEngines")
+        logger.info("UnTsDeepLXTranslator init success, supportedEngines: $supportedEngines")
         return true
     }
 
+    /**
+     *
+     * POST {"text": "have a try", "source_lang": "auto", "target_lang": "ZH"} to https://deeplx.vercel.app/translate
+     * {"code":200,"data":".+Supports+invoking+privately+deployed+LLMs+like+Qwen-Turbo+%2C+Gemma+3+...+%28via+ol1ama+%29."}
+     */
     override fun sendRequest(
         requestId: String,
         sourceLang: String,
@@ -164,7 +168,7 @@ class DeepLXTranslator : SingleInputTranslator() {
                 .asRuntimeException()
         }
 
-        logger.debug("DeepLX translateTexts start, sourceLang:$sourceLang, targetLang:${targetLang}, input:${input}")
+        logger.debug("UnTsDeepLX translateTexts start, sourceLang:$sourceLang, targetLang:${targetLang}, input:${input}")
 
         val begin = System.currentTimeMillis()
         val realTargetLang = if (targetLang.equals("EN", true)) {
@@ -176,34 +180,35 @@ class DeepLXTranslator : SingleInputTranslator() {
         }
 
         try {
-            val jsonMap = mutableMapOf<String, Any>()
-            // \n => " ", \n causes DeepLX return code 503
-            jsonMap["text"] = listOf(input.replace("\n", " "))
-            jsonMap["target_lang"] = realTargetLang
-            val payload = gson.toJson(jsonMap)
-            val body: RequestBody = payload.toRequestBody("application/json; charset=utf-8".toMediaType())
-
-            val requestUrl = "$url$API"
-            val request =
-                Request.Builder().url(requestUrl).addHeader("Content-Type", "application/json").post(body).build()
+            val bodyBuilder = FormBody.Builder()
+                .add("source_lang", "auto")
+                .add("target_lang", realTargetLang)
+                .add("text", input)
+            val body: RequestBody = bodyBuilder.build()
+            val request: Request = Request.Builder().url(url).post(body).build()
 
             val response = client.newCall(request).execute()
             if (response.isSuccessful && Objects.nonNull(response.body)) {
                 val end = System.currentTimeMillis()
                 val result = response.body!!.string()
                 val map = gson.fromJson(result, Map::class.java)
-                val translations = (map["translations"] as List<Map<*, *>>)
-                val output = (translations[0] as Map<String, String>)["text"] as String
-                logger.info("DeepLX translateTexts end, time: ${end - begin} ms, target: ${targetLang}, results: ${output}, input: ${input}")
+                if ((map["code"] as Number).toInt() != 200) {
+                    logger.error("UnTsDeepLX translation result code invalid, input:${input}, target:${targetLang}, code:${map["code"]}")
+                    throw Status.UNAVAILABLE.withDescription("UnTsDeepLX result code invalid, code:${map["code"]}")
+                        .asRuntimeException()
+                }
+                val translation = (map["data"] as String)
+                val output = URLDecoder.decode(translation, "UTF-8")
+                logger.info("UnTsDeepLX translateTexts end, time: ${end - begin} ms, target: ${targetLang}, results: ${output}, input: ${input}")
                 return output
             } else {
-                logger.error("DeepLX translation return code invalid,  input:${input}, target:${targetLang}, code:${response.code}")
-                throw Status.UNAVAILABLE.withDescription("DeepLX return code invalid, code:${response.code}")
+                logger.error("UnTsDeepLX translation return code invalid,  input:${input}, target:${targetLang}, code:${response.code}")
+                throw Status.UNAVAILABLE.withDescription("UnTsDeepLX return code invalid, code:${response.code}")
                     .asRuntimeException()
             }
         } catch (e: Exception) {
             logger.warn(
-                "DeepLX translation failure, input:${input}, target:${targetLang}, error:${e}", e
+                "UnTsDeepLX translation failure, input:${input}, target:${targetLang}, error:${e}", e
             )
             throw e
         }

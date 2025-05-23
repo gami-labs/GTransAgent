@@ -8,6 +8,7 @@ enablesTranslators:
   - MicrosoftExperimental
   - TencentExperimental
   - YandexExperimental
+  - UnTsDeepLX
 
 # add all the engines you want to support here
 translatorDefines:
@@ -57,3 +58,5 @@ translatorDefines:
     classFile: net.gtransagent.translator.experimental.TencentExperimentalTranslator
   - translatorCode: YandexExperimental # free Experimental translator
     classFile: net.gtransagent.translator.experimental.YandexExperimentalTranslator
+  - translatorCode: UnTsDeepLX
+    classFile: net.gtransagent.translator.UnTsDeepLXTranslator

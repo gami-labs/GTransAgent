@@ -1,0 +1,7 @@
+# Description: An unofficial but powerful and easy-to-use yet free DeepL API client for Node.js using DeepL by porting OwO-Network/DeepLX.
+
+# https://github.com/un-ts/deeplx
+# DeepLX url, e.g. https://deeplx.vercel.app/translate
+url: https://deeplx.vercel.app/translate
+# Number of concurrent requests
+concurrent: 3
