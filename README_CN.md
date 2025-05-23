@@ -72,30 +72,31 @@ AN --> HN[其它翻译引擎]
 
 ## 支持的翻译器
 
-| 翻译器  | 翻译引擎  | 需要 API Key ? | 备注  |
-|---|---|---|---|
-| [Ollama](./docs/translators/Ollama.md) |Gemma, Qwen ...| x  |需要先私有化部署大语言模型, [Ollama 介绍](https://ollama.org.cn/)|
-| [DeepLX](./docs/translators/DeepLX.md)  |DeepL| x  |需要自行下载并运行 [DeepLX](https://deeplx.owo.network/)|
-| [Google](./docs/translators/Google.md)  |Google| ✓  ||
-| [DeepL](./docs/translators/DeepL.md)  |DeepL| ✓  ||
-| [Microsoft](./docs/translators/Microsoft.md)  |Microsoft| ✓  ||
-| [Yandex](./docs/translators/Yandex.md)  |Yandex| ✓  ||
-| [Youdao](./docs/translators/Youdao.md)  (有道翻译) |Youdao| ✓  ||
-| [Volcengine](./docs/translators/Volcengine.md)  (火山翻译) |Volcengine| ✓  ||
-| [Niutrans](./docs/translators/Niutrans.md)  (小牛翻译) |Niutrans| ✓ ||
-| [Baidu](./docs/translators/Baidu.md)  (百度翻译)|Baidu| ✓  ||
-| [OpenAI](./docs/translators/OpenAI.md)  |Gpt 4 mini, Gpt 4.1 nano ...| ✓  |可自行添加多个模型|
-| [Gemini](./docs/translators/Gemini.md)  |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓  |可自行添加多个模型|
-| [Anthropic](./docs/translators/Anthropic.md)  |Claude 3 Haiku ...| ✓  |可自行添加多个模型|
-| [Mistral](./docs/translators/Mistral.md)  |Mistral Small, Ministral 8B ...| ✓  |可自行添加多个模型|
-| [AliyunBailian](./docs/translators/AliyunBailian.md)  (阿里云百炼) |通义千问-Plus, 通义千问-Turbo ...| ✓  |可自行添加多个模型|
-| [BigModel](./docs/translators/BigModel.md)  (智谱AI)|GLM-4-Plus, GLM-4-Flash ...| ✓  |可自行添加多个模型|
-| [DeepSeek](./docs/translators/DeepSeek.md)  |DeepSeek V3| ✓  |可自行添加多个模型|
-| [VolcengineArk](./docs/translators/VolcengineArk.md)  (火山方舟) |Doubao-1.5-pro, DeepSeek V3 ...| ✓  |可自行添加多个模型|
-| [GoogleExperimental](./docs/translators/GoogleExperimental.md)  |Google| x  |△|
-| [MicrosoftExperimental](./docs/translators/MicrosoftExperimental.md)  |Microsoft| x  |△ |
-| [TencentExperimental](./docs/translators/TencentExperimental.md)  |Tencent| x  |△|
-| [YandexExperimental](./docs/translators/YandexExperimental.md)  |Yandex| x  |△|
+| 翻译器  | 翻译引擎  | 需要 API Key ? | 备注                                                                     |
+|---|---|---|------------------------------------------------------------------------|
+| [Ollama](./docs/translators/Ollama.md) |Gemma, Qwen ...| x  | 需要先私有化部署大语言模型, [Ollama 介绍](https://ollama.org.cn/)                     |
+| [DeepLX](./docs/translators/DeepLX.md)  |DeepL| x  | 需要自行下载并运行 [DeepLX](https://deeplx.owo.network/)                        |
+| [UnTsDeepLX](./docs/translators/UnTsDeepLX.md) |UnTsDeepLX| × | 参考: [https://github.com/un-ts/deeplx](https://github.com/un-ts/deeplx) |
+| [Google](./docs/translators/Google.md)  |Google| ✓  |                                                                        |
+| [DeepL](./docs/translators/DeepL.md)  |DeepL| ✓  |                                                                        |
+| [Microsoft](./docs/translators/Microsoft.md)  |Microsoft| ✓  |                                                                        |
+| [Yandex](./docs/translators/Yandex.md)  |Yandex| ✓  |                                                                        |
+| [Youdao](./docs/translators/Youdao.md)  (有道翻译) |Youdao| ✓  |                                                                        |
+| [Volcengine](./docs/translators/Volcengine.md)  (火山翻译) |Volcengine| ✓  |                                                                        |
+| [Niutrans](./docs/translators/Niutrans.md)  (小牛翻译) |Niutrans| ✓ |                                                                        |
+| [Baidu](./docs/translators/Baidu.md)  (百度翻译)|Baidu| ✓  |                                                                        |
+| [OpenAI](./docs/translators/OpenAI.md)  |Gpt 4 mini, Gpt 4.1 nano ...| ✓  | 可自行添加多个模型                                                              |
+| [Gemini](./docs/translators/Gemini.md)  |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓  | 可自行添加多个模型                                                              |
+| [Anthropic](./docs/translators/Anthropic.md)  |Claude 3 Haiku ...| ✓  | 可自行添加多个模型                                                              |
+| [Mistral](./docs/translators/Mistral.md)  |Mistral Small, Ministral 8B ...| ✓  | 可自行添加多个模型                                                              |
+| [AliyunBailian](./docs/translators/AliyunBailian.md)  (阿里云百炼) |通义千问-Plus, 通义千问-Turbo ...| ✓  | 可自行添加多个模型                                                              |
+| [BigModel](./docs/translators/BigModel.md)  (智谱AI)|GLM-4-Plus, GLM-4-Flash ...| ✓  | 可自行添加多个模型                                                              |
+| [DeepSeek](./docs/translators/DeepSeek.md)  |DeepSeek V3| ✓  | 可自行添加多个模型                                                              |
+| [VolcengineArk](./docs/translators/VolcengineArk.md)  (火山方舟) |Doubao-1.5-pro, DeepSeek V3 ...| ✓  | 可自行添加多个模型                                                              |
+| [GoogleExperimental](./docs/translators/GoogleExperimental.md)  |Google| x  | △                                                                      |
+| [MicrosoftExperimental](./docs/translators/MicrosoftExperimental.md)  |Microsoft| x  | △                                                                      |
+| [TencentExperimental](./docs/translators/TencentExperimental.md)  |Tencent| x  | △                                                                      |
+| [YandexExperimental](./docs/translators/YandexExperimental.md)  |Yandex| x  | △                                                                      |
 
 
 💡点击翻译器名称可以查看该翻译器的配置方式. △ 表示翻译器稳定性可能较差

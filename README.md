@@ -68,30 +68,31 @@ Configure enabled **translators** before starting `GTransAgent`.
 
 ## Supported Translators
 
-| Translator | Engines | API Key Required | Notes |
-|---|---|---|---|
-| [Ollama](./docs/translators/Ollama.md) |Gemma, Qwen...| × |Requires local LLM deployment via [Ollama](https://ollama.org.cn/)|
-| [DeepLX](./docs/translators/DeepLX.md) |DeepL| × |Requires [DeepLX](https://deeplx.owo.network/)|
-| [Google](./docs/translators/Google.md) |Google| ✓ ||
-| [DeepL](./docs/translators/DeepL.md) |DeepL| ✓ ||
-| [Microsoft](./docs/translators/Microsoft.md) |Microsoft| ✓ ||
-| [Yandex](./docs/translators/Yandex.md) |Yandex| ✓ ||
-| [Youdao](./docs/translators/Youdao.md) |Youdao| ✓ ||
-| [Volcengine](./docs/translators/Volcengine.md) |Volcengine| ✓ ||
-| [Niutrans](./docs/translators/Niutrans.md) |Niutrans| ✓ ||
-| [Baidu](./docs/translators/Baidu.md) |Baidu| ✓ ||
-| [OpenAI](./docs/translators/OpenAI.md) |Gpt 4 mini, Gpt 4.1 nano ...| ✓ |Supports multiple models|
-| [Gemini](./docs/translators/Gemini.md) |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓ |Supports multiple models|
-| [Anthropic](./docs/translators/Anthropic.md) |Claude 3 Haiku...| ✓ |Supports multiple models|
-| [Mistral](./docs/translators/Mistral.md) |Mistral Small, Ministral 8B ...| ✓ |Supports multiple models|
-| [AliyunBailian](./docs/translators/AliyunBailian.md) |Qwen-Plus, Qwen-Turbo ...| ✓ |Supports multiple models|
-| [BigModel](./docs/translators/BigModel.md) |GLM-4-Plus, GLM-4-Flash ...| ✓ |Supports multiple models|
-| [DeepSeek](./docs/translators/DeepSeek.md) |DeepSeek V3| ✓ |Supports multiple models|
-| [VolcengineArk](./docs/translators/VolcengineArk.md) |Doubao-1.5-pro, DeepSeek V3 ...| ✓ |Supports multiple models|
-| [GoogleExperimental](./docs/translators/GoogleExperimental.md) |Google| × |△|
-| [MicrosoftExperimental](./docs/translators/MicrosoftExperimental.md) |Microsoft| × |△|
-| [TencentExperimental](./docs/translators/TencentExperimental.md) |Tencent| × |△|
-| [YandexExperimental](./docs/translators/YandexExperimental.md) |Yandex| × |△|
+| Translator | Engines | API Key Required | Notes                                                                     |
+|---|---|---|---------------------------------------------------------------------------|
+| [Ollama](./docs/translators/Ollama.md) |Gemma, Qwen...| × | Requires local LLM deployment via [Ollama](https://ollama.org.cn/)        |
+| [DeepLX](./docs/translators/DeepLX.md) |DeepL| × | Requires [DeepLX](https://deeplx.owo.network/)                            |
+| [UnTsDeepLX](./docs/translators/UnTsDeepLX.md) |UnTsDeepLX| × | Refer: [https://github.com/un-ts/deeplx](https://github.com/un-ts/deeplx) |
+| [Google](./docs/translators/Google.md) |Google| ✓ |                                                                           |
+| [DeepL](./docs/translators/DeepL.md) |DeepL| ✓ |                                                                           |
+| [Microsoft](./docs/translators/Microsoft.md) |Microsoft| ✓ |                                                                           |
+| [Yandex](./docs/translators/Yandex.md) |Yandex| ✓ |                                                                           |
+| [Youdao](./docs/translators/Youdao.md) |Youdao| ✓ |                                                                           |
+| [Volcengine](./docs/translators/Volcengine.md) |Volcengine| ✓ |                                                                           |
+| [Niutrans](./docs/translators/Niutrans.md) |Niutrans| ✓ |                                                                           |
+| [Baidu](./docs/translators/Baidu.md) |Baidu| ✓ |                                                                           |
+| [OpenAI](./docs/translators/OpenAI.md) |Gpt 4 mini, Gpt 4.1 nano ...| ✓ | Supports multiple models                                                  |
+| [Gemini](./docs/translators/Gemini.md) |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓ | Supports multiple models                                                  |
+| [Anthropic](./docs/translators/Anthropic.md) |Claude 3 Haiku...| ✓ | Supports multiple models                                                  |
+| [Mistral](./docs/translators/Mistral.md) |Mistral Small, Ministral 8B ...| ✓ | Supports multiple models                                                  |
+| [AliyunBailian](./docs/translators/AliyunBailian.md) |Qwen-Plus, Qwen-Turbo ...| ✓ | Supports multiple models                                                  |
+| [BigModel](./docs/translators/BigModel.md) |GLM-4-Plus, GLM-4-Flash ...| ✓ | Supports multiple models                                                  |
+| [DeepSeek](./docs/translators/DeepSeek.md) |DeepSeek V3| ✓ | Supports multiple models                                                  |
+| [VolcengineArk](./docs/translators/VolcengineArk.md) |Doubao-1.5-pro, DeepSeek V3 ...| ✓ | Supports multiple models                                                  |
+| [GoogleExperimental](./docs/translators/GoogleExperimental.md) |Google| × | △                                                                         |
+| [MicrosoftExperimental](./docs/translators/MicrosoftExperimental.md) |Microsoft| × | △                                                                         |
+| [TencentExperimental](./docs/translators/TencentExperimental.md) |Tencent| × | △                                                                         |
+| [YandexExperimental](./docs/translators/YandexExperimental.md) |Yandex| × | △                                                                         |
 
 💡Click translator name for configuration details. △ indicates experimental stability
 
