@@ -74,7 +74,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             sourceLang = "en",
             false,
         ) { requestId, isAllItemTransFinished, transResultItems, status ->
-            if (status != null) {
+            if (status != null && status.code != Status.Code.OK) {
                 logger.error("Translate error: ${status.code} ${status.description}")
                 responseBuilder.setResult(false)
                 responseObserver.onNext(responseBuilder.build())
@@ -118,7 +118,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             sourceLang = request.sourceLang,
             isSourceLanguageUserSetToAuto = request.isSourceLanguageUserSetToAuto
         ) { requestId, isAllItemTransFinished, transResultItems, status ->
-            if (status != null) {
+            if (status != null && status.code != Status.Code.OK) {
                 logger.error("Translate error: ${status.code} ${status.description}")
                 responseObserver.onError(status.asRuntimeException())
                 return@translate
@@ -135,7 +135,7 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             }
 
             if (isAllItemTransFinished) {
-                var endTime = System.currentTimeMillis()
+                val endTime = System.currentTimeMillis()
                 logger.info("Translate finished: $requestId, time: ${endTime - beginTime} ms")
                 responseObserver.onCompleted()
             }
