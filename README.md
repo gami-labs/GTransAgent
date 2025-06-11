@@ -1,4 +1,4 @@
-English | [简体中文](./README_CN.md)
+English | [简体中文](./README.zh-CN.md)
 
 # GTransAgent
 
@@ -73,27 +73,27 @@ Configure enabled **translators** before starting `GTransAgent`.
 | [Ollama](./docs/translators/Ollama.md) |Gemma, Qwen...| × | Requires local LLM deployment via [Ollama](https://ollama.org.cn/)        |
 | [DeepLX](./docs/translators/DeepLX.md) |DeepL| × | Requires [DeepLX](https://deeplx.owo.network/)                            |
 | [UnTsDeepLX](./docs/translators/UnTsDeepLX.md) |UnTsDeepLX| × | Refer: [https://github.com/un-ts/deeplx](https://github.com/un-ts/deeplx) |
-| [Google](./docs/translators/Google.md) |Google| ✓ |                                                                           |
-| [DeepL](./docs/translators/DeepL.md) |DeepL| ✓ |                                                                           |
+| [Google](./docs/translators/ApiKeyTranslators.md) |Google| ✓ |                                                                           |
+| [DeepL](./docs/translators/ApiKeyTranslators.md) |DeepL| ✓ |                                                                           |
 | [Microsoft](./docs/translators/Microsoft.md) |Microsoft| ✓ |                                                                           |
-| [Yandex](./docs/translators/Yandex.md) |Yandex| ✓ |                                                                           |
-| [Youdao](./docs/translators/Youdao.md) |Youdao| ✓ |                                                                           |
-| [Volcengine](./docs/translators/Volcengine.md) |Volcengine| ✓ |                                                                           |
-| [Niutrans](./docs/translators/Niutrans.md) |Niutrans| ✓ |                                                                           |
-| [Baidu](./docs/translators/Baidu.md) |Baidu| ✓ |                                                                           |
-| [OpenAI](./docs/translators/OpenAI.md) |Gpt 4 mini, Gpt 4.1 nano ...| ✓ | Supports multiple models                                                  |
-| [Gemini](./docs/translators/Gemini.md) |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓ | Supports multiple models                                                  |
-| [Anthropic](./docs/translators/Anthropic.md) |Claude 3 Haiku...| ✓ | Supports multiple models                                                  |
-| [Mistral](./docs/translators/Mistral.md) |Mistral Small, Ministral 8B ...| ✓ | Supports multiple models                                                  |
-| [AliyunBailian](./docs/translators/AliyunBailian.md) |Qwen-Plus, Qwen-Turbo ...| ✓ | Supports multiple models                                                  |
-| [BigModel](./docs/translators/BigModel.md) |GLM-4-Plus, GLM-4-Flash ...| ✓ | Supports multiple models                                                  |
-| [DeepSeek](./docs/translators/DeepSeek.md) |DeepSeek V3| ✓ | Supports multiple models                                                  |
-| [VolcengineArk](./docs/translators/VolcengineArk.md) |Doubao-1.5-pro, DeepSeek V3 ...| ✓ | Supports multiple models                                                  |
-| [GoogleExperimental](./docs/translators/GoogleExperimental.md) |Google| × | △                                                                         |
-| [MicrosoftExperimental](./docs/translators/MicrosoftExperimental.md) |Microsoft| × | △                                                                         |
-| [TencentExperimental](./docs/translators/TencentExperimental.md) |Tencent| × | △                                                                         |
-| [YandexExperimental](./docs/translators/YandexExperimental.md) |Yandex| × | △                                                                         |
-
+| [Yandex](./docs/translators/ApiKeyTranslators.md) |Yandex| ✓ |                                                                           |
+| [Youdao](./docs/translators/ApiKeyAndSecretTranslators.md) |Youdao| ✓ |                                                                           |
+| [Volcengine](./docs/translators/ApiKeyAndSecretTranslators.md) |Volcengine| ✓ |                                                                           |
+| [Niutrans](./docs/translators/ApiKeyAndAppIdTranslators.md) |Niutrans| ✓ |                                                                           |
+| [Baidu](./docs/translators/ApiKeyAndAppIdTranslators.md) |Baidu| ✓ |                                                                           |
+| [OpenAI](./docs/translators/LLMsPlatformApi.md) |Gpt 4 mini, Gpt 4.1 nano ...| ✓ | Supports multiple models                                                  |
+| [Gemini](./docs/translators/LLMsPlatformApi.md) |Gemini 2.0 Flash, Gemini 2.5 Pro ...| ✓ | Supports multiple models                                                  |
+| [Anthropic](./docs/translators/LLMsPlatformApi.md) |Claude 3 Haiku...| ✓ | Supports multiple models                                                  |
+| [Mistral](./docs/translators/LLMsPlatformApi.md) |Mistral Small, Ministral 8B ...| ✓ | Supports multiple models                                                  |
+| [AliyunBailian](./docs/translators/LLMsPlatformApi.md) |Qwen-Plus, Qwen-Turbo ...| ✓ | Supports multiple models                                                  |
+| [BigModel](./docs/translators/LLMsPlatformApi.md) |GLM-4-Plus, GLM-4-Flash ...| ✓ | Supports multiple models                                                  |
+| [DeepSeek](./docs/translators/LLMsPlatformApi.md) |DeepSeek V3| ✓ | Supports multiple models                                                  |
+| [VolcengineArk](./docs/translators/LLMsPlatformApi.md) |Doubao-1.5-pro, DeepSeek V3 ...| ✓ | Supports multiple models                                                  |
+| [GoogleExperimental](./docs/translators/Experimental.md) |Google| × | △                                                                         |
+| [MicrosoftExperimental](./docs/translators/Experimental.md) |Microsoft| × | △                                                                         |
+| [TencentExperimental](./docs/translators/Experimental.md) |Tencent| × | △                                                                         |
+| [YandexExperimental](./docs/translators/Experimental.md) |Yandex| × | △                                                                         |
+| [VolcengineExperimental](./docs/translators/Experimental.md) |Volcengine| × | △                                                                         |
 💡Click translator name for configuration details. △ indicates experimental stability
 
 ## Usage

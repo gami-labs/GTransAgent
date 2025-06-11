@@ -1,8 +1,8 @@
-# Description: Niutrans translator configuration
+# Description: Baidu translator configuration
 
-# Niutrans translation API key
-# https://niutrans.com/documents/contents/transapi_text_v2#accessMode
-# or set the environment variable NIUTRANS_API_KEY
+# Baidu translation API key
+# https://api.fanyi.baidu.com/product/113
+# or set the environment variable BAIDU_API_KEY
 apiKey:
-# or set the environment variable NIUTRANS_APP_ID
+# or set the environment variable BAIDU_APP_ID
 appId:
