@@ -11,7 +11,7 @@ buildscript {
 }
 
 plugins {
-    id 'org.jetbrains.kotlin.jvm' version '1.9.24'
+    id 'org.jetbrains.kotlin.jvm'
     id 'application'
     id 'com.google.protobuf' version '0.9.4'
     id 'org.panteleyev.jpackageplugin' version '1.6.1'
@@ -23,14 +23,7 @@ repositories {
     mavenCentral()
 }
 
-java {
-    sourceCompatibility = JavaVersion.VERSION_1_8
-    targetCompatibility = JavaVersion.VERSION_1_8
-}
 
-kotlin {
-    jvmToolchain(8)
-}
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
 }
@@ -83,6 +76,7 @@ dependencies {
     testImplementation "io.grpc:grpc-testing:${grpcVersion}"
     testImplementation "io.grpc:grpc-inprocess:${grpcVersion}"
     testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.8.1"
+
 }
 
 test {
