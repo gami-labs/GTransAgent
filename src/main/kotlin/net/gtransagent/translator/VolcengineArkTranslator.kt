@@ -121,7 +121,7 @@ class VolcengineArkTranslator : LanguageGroupedTranslator() {
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
-        if (configs["engineMapping"] == null || (configs["engineMapping"] as Map<String, String>).isEmpty()) {
+        if (configs["engineMapping"] == null || (configs["engineMapping"] as Map<String, Map<String, String>>).isEmpty()) {
             logger.error("VolcengineArkTranslator init failed, engineMapping is null or empty")
             return false
         }
