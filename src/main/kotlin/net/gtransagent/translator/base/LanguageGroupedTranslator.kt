@@ -10,6 +10,7 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.atomic.AtomicInteger
 
 abstract class LanguageGroupedTranslator : ITranslator {
     private val logger: Logger = LoggerFactory.getLogger(this::class.java)
@@ -43,8 +44,7 @@ abstract class LanguageGroupedTranslator : ITranslator {
         val requestId: String,
         val targetLang: String,
         val totalCount: Int,
-        @Volatile
-        var transFinished: Int = 0,
+        val transFinished: AtomicInteger = AtomicInteger(0),
         val engineCode: String,
         val isAutoTrans: Boolean,
         val callback: (
@@ -78,6 +78,16 @@ abstract class LanguageGroupedTranslator : ITranslator {
                 inputs.add(item.input)
             }
 
+            fun emitResult(itemId: Int, text: String, status: Status?) {
+                val finishedCount = translateContext.transFinished.incrementAndGet()
+                val isAllFinished = finishedCount >= translateContext.totalCount
+                callback(
+                    requestId, isAllFinished,
+                    listOf(ResultItem.newBuilder().setId(itemId).setResult(text).build()),
+                    status
+                )
+            }
+
             try {
                 val result = sendRequest(
                     requestId,  srcLang, targetLang, inputs, engineCode, glossaryWords, glossaryIgnoreCase
@@ -87,19 +97,11 @@ abstract class LanguageGroupedTranslator : ITranslator {
                     val itemId = inputItems[i].id
                     if (i >= result.size) {
                         logger.error("${getName()} translate failed, index out of bounds: $i, result size: ${result.size}")
-                        callback(
-                            requestId, ++translateContext.transFinished >= translateContext.totalCount, listOf(
-                                ResultItem.newBuilder().setId(itemId).setResult("").build()
-                            ), Status.INTERNAL
-                        )
-                        return
+                        emitResult(itemId, "", Status.INTERNAL)
+                        continue
                     }
                     val output = result[i]
-                    callback(
-                        requestId, ++translateContext.transFinished >= translateContext.totalCount, listOf(
-                            ResultItem.newBuilder().setId(itemId).setResult(output).build()
-                        ), null
-                    )
+                    emitResult(itemId, output, null)
                 }
             } catch (e: Exception) {
                 logger.error("${getName()} translate failed, error: $e")
@@ -108,9 +110,9 @@ abstract class LanguageGroupedTranslator : ITranslator {
                 } else {
                     Status.INTERNAL
                 }
-                callback(
-                    requestId, ++translateContext.transFinished >= translateContext.totalCount, emptyList(), status
-                )
+                inputItems.forEach { item ->
+                    emitResult(item.id, "", status)
+                }
             }
         }
     }
@@ -144,7 +146,7 @@ abstract class LanguageGroupedTranslator : ITranslator {
         logger.info("${getName()} translate $requestId, count: $count")
 
         val translateContext = TranslateContext(
-            requestId, targetLang, count, 0, engineCode = engineCode, isAutoTrans = isAutoTrans, callback = callback
+            requestId, targetLang, count, engineCode = engineCode, isAutoTrans = isAutoTrans, callback = callback
         )
 
         langItems.forEach { langItem ->
