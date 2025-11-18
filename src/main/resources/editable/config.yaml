@@ -9,6 +9,8 @@ enablesTranslators:
   - TencentExperimental
   - YandexExperimental
   - UnTsDeepLX
+  - Google
+  - DeepL
 
 # add all the engines you want to support here
 translatorDefines:
@@ -60,3 +62,5 @@ translatorDefines:
     classFile: net.gtransagent.translator.experimental.YandexExperimentalTranslator
   - translatorCode: UnTsDeepLX
     classFile: net.gtransagent.translator.UnTsDeepLXTranslator
+  - translatorCode: xAI
+    classFile: net.gtransagent.translator.XAITranslator

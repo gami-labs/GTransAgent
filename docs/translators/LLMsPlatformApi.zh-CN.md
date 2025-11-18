@@ -15,6 +15,7 @@
 
 * VolcengineArk (火山方舟) [https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey](https://console.volcengine.com/ark/region:ark+cn-beijing/apiKey)
 
+* xAI (Grok) [https://docs.x.ai/docs/resources/faq-api/accounts](https://docs.x.ai/docs/resources/faq-api/accounts)
 
 ## yaml 配置说明
 

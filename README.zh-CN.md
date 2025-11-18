@@ -93,6 +93,7 @@ AN --> HN[其它翻译引擎]
 | [BigModel](./docs/translators/LLMsPlatformApi.zh-CN.md)  (智谱AI)|GLM-4-Plus, GLM-4-Flash ...| ✓  | 可自行添加多个模型                                                              |
 | [DeepSeek](./docs/translators/LLMsPlatformApi.zh-CN.md)  |DeepSeek V3| ✓  | 可自行添加多个模型                                                              |
 | [VolcengineArk](./docs/translators/LLMsPlatformApi.zh-CN.md)  (火山方舟) |Doubao-1.5-pro, DeepSeek V3 ...| ✓  | 可自行添加多个模型                                                              |
+| [xAI (Grok)](./docs/translators/LLMsPlatformApi.md) |Grok 4 Fast, Grok 3 Mini ...| ✓ | 可自行添加多个模型
 | [GoogleExperimental](./docs/translators/Experimental.zh-CN.md)  |Google| x  | △                                                                      |
 | [MicrosoftExperimental](./docs/translators/Experimental.zh-CN.md)  |Microsoft| x  | △                                                                      |
 | [TencentExperimental](./docs/translators/Experimental.zh-CN.md)  |Tencent| x  | △                                                                      |

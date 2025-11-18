@@ -89,6 +89,7 @@ Configure enabled **translators** before starting `GTransAgent`.
 | [BigModel](./docs/translators/LLMsPlatformApi.md) |GLM-4-Plus, GLM-4-Flash ...| ✓ | Supports multiple models                                                  |
 | [DeepSeek](./docs/translators/LLMsPlatformApi.md) |DeepSeek V3| ✓ | Supports multiple models                                                  |
 | [VolcengineArk](./docs/translators/LLMsPlatformApi.md) |Doubao-1.5-pro, DeepSeek V3 ...| ✓ | Supports multiple models                                                  |
+| [xAI (Grok)](./docs/translators/LLMsPlatformApi.md) |Grok 4 Fast, Grok 3 Mini ...| ✓ | Supports multiple models                                                  |
 | [GoogleExperimental](./docs/translators/Experimental.md) |Google| × | △                                                                         |
 | [MicrosoftExperimental](./docs/translators/Experimental.md) |Microsoft| × | △                                                                         |
 | [TencentExperimental](./docs/translators/Experimental.md) |Tencent| × | △                                                                         |
