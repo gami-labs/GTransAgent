@@ -48,7 +48,7 @@ class XAITranslator : LanguageGroupedTranslator() {
         Output Format:
         {"translations":[{"id":1,"text":"Translated Text"}]}
         
-        Vocabulary (case-{{{glossarySensitive}}}):
+        Vocabulary (case-{{glossarySensitive}}):
         {{glossaryList}}
         
         Instructions:
