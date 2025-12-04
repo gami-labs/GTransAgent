@@ -9,8 +9,6 @@ enablesTranslators:
   - TencentExperimental
   - YandexExperimental
   - UnTsDeepLX
-  - Google
-  - DeepL
 
 # add all the engines you want to support here
 translatorDefines:
