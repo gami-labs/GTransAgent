@@ -8,7 +8,7 @@ enablesTranslators:
   - MicrosoftExperimental
   - TencentExperimental
   - YandexExperimental
-  - UnTsDeepLX
+  - Baidu
 
 # add all the engines you want to support here
 translatorDefines:
