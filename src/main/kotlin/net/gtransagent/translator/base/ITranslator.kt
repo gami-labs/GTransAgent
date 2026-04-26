@@ -64,6 +64,8 @@ interface ITranslator {
      * when isSourceLanguageUserSetToAuto is true, the sourceLang parameter is set to the language automatically detected based on all input texts. otherwise, it is set to the language selected by the user.
      * @param sourceLang when isSourceLanguageUserSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
      * @param isSourceLanguageUserSetToAuto true if user selects "auto" as the source language
+     * @param previousTranslationInputs previous translation inputs as context for LLM-based translators, may be empty
+     * @param customPrompt custom prompt content from user for LLM-based translators, may be empty
      */
     fun translate(
         requestId: String, // unique request id
@@ -73,6 +75,8 @@ interface ITranslator {
         langItems: List<LangItem>, // translation items
         sourceLang: String, // source language, e.g. zh_Hans, en, when isSourceLanguageUserSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
+        previousTranslationInputs: List<String> = emptyList(), // previous translation inputs as context, may be empty
+        customPrompt: String = "", // custom prompt content from user, may be empty
         callback: (
             requestId: String, // unique request id
             isAllItemTransFinished: Boolean, // true if all items are translated

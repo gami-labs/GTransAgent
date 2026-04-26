@@ -30,6 +30,8 @@ abstract class FullBatchTranslator : ITranslator {
         langItems: List<LangItem>,
         sourceLang: String, // source language, e.g. zh_Hans, en, when isSourceLanguageSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
+        previousTranslationInputs: List<String>, // previous translation inputs as context, may be empty
+        customPrompt: String, // custom prompt content from user, may be empty
         callback: (
             requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
         ) -> Unit
@@ -82,7 +84,9 @@ abstract class FullBatchTranslator : ITranslator {
                 sourceLang,
                 isSourceLanguageUserSetToAuto,
                 glossaryWords,
-                glossaryIgnoreCase
+                glossaryIgnoreCase,
+                previousTranslationInputs,
+                customPrompt
             )
 
             val resultItems = mutableListOf<ResultItem>()
@@ -127,6 +131,11 @@ abstract class FullBatchTranslator : ITranslator {
      *
      * @param sourceLang, If all input items share the same source language, set sourceLang to that language. Otherwise, set sourceLang to null.
      */
+    /**
+     * Send translation request to the translation engine
+     * @param previousTranslationInputs previous translation inputs as context for LLM-based translators, may be empty
+     * @param customPrompt custom prompt content from user for LLM-based translators, may be empty
+     */
     @Throws(Exception::class)
     abstract fun sendRequest(
         requestId: String,
@@ -135,7 +144,9 @@ abstract class FullBatchTranslator : ITranslator {
         sourceLang: String? = null,
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>? = null,
-        glossaryIgnoreCase: Boolean = false
+        glossaryIgnoreCase: Boolean = false,
+        previousTranslationInputs: List<String> = emptyList(),
+        customPrompt: String = ""
     ): List<String>
 
 }

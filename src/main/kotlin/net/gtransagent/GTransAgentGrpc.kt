@@ -107,7 +107,37 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             responseObserver.onError(StatusRuntimeException(Status.PERMISSION_DENIED))
             return
         }
-        logger.info("Translate request: ${request.requestId}, inputs: ${inputs.joinToString(",") { it.toString() }}")
+        val inputsLogStr = inputs.joinToString(",") { langItem ->
+            "[${langItem.inputLang}]" + langItem.inputItemListList.joinToString(",") { "(${it.id}, ${it.input})" }
+        }
+        logger.info("Translate request: ${request.requestId}, inputs: $inputsLogStr")
+
+        // Decrypt previous translation inputs for LLM context
+        val previousTranslationInputs = try {
+            request.previousTranslationInputsList
+                .filter { it.isNotBlank() }
+                .map { String(TransDataConverter.decryptData(it), Charsets.UTF_8) }
+        } catch (e: Exception) {
+            logger.warn("decrypt previousTranslationInputs error: ${e.message}", e)
+            emptyList()
+        }
+
+        // Decrypt custom prompt content
+        val customPrompt = try {
+            if (request.customPrompt.isNotBlank()) {
+                String(TransDataConverter.decryptData(request.customPrompt), Charsets.UTF_8)
+            } else ""
+        } catch (e: Exception) {
+            logger.warn("decrypt customPrompt error: ${e.message}", e)
+            ""
+        }
+
+        if (previousTranslationInputs.isNotEmpty()) {
+            logger.info("Translate request: ${request.requestId}, previousTranslationInputs count: ${previousTranslationInputs.size}")
+        }
+        if (customPrompt.isNotBlank()) {
+            logger.info("Translate request: ${request.requestId}, customPrompt: $customPrompt")
+        }
 
         translator.translate(
             request.requestId,
@@ -116,7 +146,9 @@ class GTransAgentGrpc : GTransAgentServiceGrpc.GTransAgentServiceImplBase() {
             request.isAutoTrans,
             inputs,
             sourceLang = request.sourceLang,
-            isSourceLanguageUserSetToAuto = request.isSourceLanguageUserSetToAuto
+            isSourceLanguageUserSetToAuto = request.isSourceLanguageUserSetToAuto,
+            previousTranslationInputs = previousTranslationInputs,
+            customPrompt = customPrompt
         ) { requestId, isAllItemTransFinished, transResultItems, status ->
             if (status != null && status.code != Status.Code.OK) {
                 logger.error("Translate error: ${status.code} ${status.description}")

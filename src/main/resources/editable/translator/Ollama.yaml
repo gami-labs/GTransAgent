@@ -5,6 +5,12 @@ url: http://127.0.0.1:11434/api/chat
 #url: http://192.168.50.200:11434/api/chat
 
 engineMapping:
+  qwen3.5-2b:
+    name: Qwen 3.5 2B
+    model: qwen3.5:2b
+  gemma4-e2b:
+    name: Gemma 4 E2B
+    model: gemma4:e2b
   gemma-3-1b: # engineCode
     name: Gemma 3 1B # engineName
     model: gemma3:1b # modelCode
@@ -14,27 +20,28 @@ engineMapping:
   qwen-3-1.7b:
     name: Qwen 3 1.7B
     model: qwen3:1.7b
-  llama-3.2-3B:
-    name: Llama 3.2 3B
-    model: llama3.2:3b
+  qwen-3-4b:
+    name: Qwen 3 4B
+    model: qwen3:4b
 
 # you can add more engines here
 
 concurrent: 3  # Number of concurrent requests
+
+# Whether to pass surrounding input items as context during translation.
+# When enabled, previous and next items in the same batch are included as context
+# to help the LLM maintain translation consistency.
+enableContext: true
 systemPrompts: |
-  You are a professional translator proficient in {{srcLang}} and {{targetLang}}. Strictly follow these rules:
-  1. Translate the given text from {{srcLang}} to fluent, natural {{targetLang}}.
-  2. Prioritize exact terminology replacements from the provided vocabulary list (format: "english_term": "chinese_term").
-  3. Term matching is case-{{glossarySensitive}} by default.
-  4. Never add explanations, pinyin, or non-translation content.
-  5. Maintain original formatting (e.g., line breaks, punctuation).
+  You are a professional translator to {{targetLang}}.
+  Source text is from OCR and may have minor errors—infer the intended meaning.
+  Produce only the {{targetLang}} translation, no explanations or commentary.
+  Keep abbreviations, codes, and identifiers as-is.
+  Maintain original formatting (e.g., line breaks, punctuation).
 
 userPrompts: |
-  Translate this {{srcLang}} text to {{targetLang}}:
-  
-  {{original}}
-  
-  Vocabulary list:
+  Vocabulary (case-{{glossarySensitive}}):
   {{glossaryList}}
-  
-  Respond ONLY with the final translation.
+
+  Translate to {{targetLang}}:
+  {{original}}

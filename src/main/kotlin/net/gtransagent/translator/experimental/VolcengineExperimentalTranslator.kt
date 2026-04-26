@@ -79,7 +79,9 @@ class VolcengineExperimentalTranslator : SingleInputTranslator() {
         input: String,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): String {
         try {
             logger.debug("Volcengine Experimental translateTexts start, requestId:$requestId, target:${targetLang}, input:${input}")

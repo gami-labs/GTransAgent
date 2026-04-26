@@ -94,7 +94,9 @@ class MicrosoftTranslator : FullBatchTranslator() {
         sourceLang: String?,
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         try {
             logger.debug("MicrosoftTranslator translateTexts start, target:${targetLang}, input:${input}")

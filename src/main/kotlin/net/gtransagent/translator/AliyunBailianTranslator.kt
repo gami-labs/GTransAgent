@@ -39,7 +39,7 @@ class AliyunBailianTranslator : LanguageGroupedTranslator() {
     """.trimIndent()
 
     val DEFAULT_USER_PROMPTS = """
-        Translate JSON entries from {{srcLang}} to {{targetLang}}:
+        Translate JSON entries to {{targetLang}}:
         
         Input Format:
         [{"id":1,"text":"Source Text"}]
@@ -199,7 +199,9 @@ class AliyunBailianTranslator : LanguageGroupedTranslator() {
         inputs: List<String>,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         try {
             val srcLangName = LangCodes.langCodeToName(sourceLang)
@@ -209,9 +211,17 @@ class AliyunBailianTranslator : LanguageGroupedTranslator() {
                 Pair("role", "system")
             )
 
-            systemMap["content"] = formatSystemPromptWords(
+            // Build system prompt, append custom prompt if provided
+            var systemContent = formatSystemPromptWords(
                 srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase
             )
+            if (customPrompt.isNotBlank()) {
+                systemContent += "\n$customPrompt"
+            }
+            if (previousTranslationInputs.isNotEmpty()) {
+                systemContent += "\nPrevious translations for context (DO NOT translate, for reference only):\n${previousTranslationInputs.joinToString("\n")}"
+            }
+            systemMap["content"] = systemContent
 
             val userMap = mutableMapOf(
                 Pair("role", "user")

@@ -30,7 +30,7 @@ abstract class SingleInputTranslator : ITranslator {
         logger.info("destroy")
     }
 
-    private val executor: ExecutorService by lazy {
+    protected val executor: ExecutorService by lazy {
         defaultExecutor()
     }
 
@@ -47,6 +47,8 @@ abstract class SingleInputTranslator : ITranslator {
         var transFinished: Int = 0,
         val engineCode: String,
         val isAutoTrans: Boolean,
+        val previousTranslationInputs: List<String> = emptyList(), // previous translation inputs as context
+        val customPrompt: String = "", // custom prompt content from user
         val callback: (
             requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
         ) -> Unit
@@ -73,7 +75,8 @@ abstract class SingleInputTranslator : ITranslator {
 
             try {
                 val result = sendRequest(
-                    requestId, srcLang, targetLang, inputString, engineCode, glossaryWords, glossaryIgnoreCase
+                    requestId, srcLang, targetLang, inputString, engineCode, glossaryWords, glossaryIgnoreCase,
+                    translateContext.previousTranslationInputs, translateContext.customPrompt
                 )
                 callback(
                     requestId, ++translateContext.transFinished >= translateContext.totalCount, listOf(
@@ -103,6 +106,8 @@ abstract class SingleInputTranslator : ITranslator {
         langItems: List<LangItem>,
         sourceLang: String, // source language, e.g. zh_Hans, en, when isSourceLanguageSetToAuto is true, sourceLang is set to the language automatically detected based on all input texts; otherwise, sourceLang is set to user selected language.
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
+        previousTranslationInputs: List<String>, // previous translation inputs as context, may be empty
+        customPrompt: String, // custom prompt content from user, may be empty
         callback: (
             requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
         ) -> Unit
@@ -123,7 +128,8 @@ abstract class SingleInputTranslator : ITranslator {
         logger.info("${getName()} translate $requestId, count: $count")
 
         val translateContext = TranslateContext(
-            requestId, targetLang, count, 0, engineCode = engineCode, isAutoTrans = isAutoTrans, callback = callback
+            requestId, targetLang, count, 0, engineCode = engineCode, isAutoTrans = isAutoTrans,
+            previousTranslationInputs = previousTranslationInputs, customPrompt = customPrompt, callback = callback
         )
 
         langItems.forEach { langItem ->
@@ -135,6 +141,11 @@ abstract class SingleInputTranslator : ITranslator {
         }
     }
 
+    /**
+     * Send translation request to the translation engine
+     * @param previousTranslationInputs previous translation inputs as context for LLM-based translators, may be empty
+     * @param customPrompt custom prompt content from user for LLM-based translators, may be empty
+     */
     @Throws(Exception::class)
     abstract fun sendRequest(
         requestId: String,
@@ -143,7 +154,9 @@ abstract class SingleInputTranslator : ITranslator {
         input: String,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String> = emptyList(),
+        customPrompt: String = ""
     ): String
 
 }

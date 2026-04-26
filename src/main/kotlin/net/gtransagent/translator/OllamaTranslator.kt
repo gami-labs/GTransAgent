@@ -3,7 +3,11 @@ package net.gtransagent.translator
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import io.grpc.Status
+import io.grpc.StatusRuntimeException
 import net.gtransagent.core.PublicConfig
+import net.gtransagent.grpc.LangItem
+import net.gtransagent.grpc.ResultItem
+import net.gtransagent.internal.AiTransContext
 import net.gtransagent.internal.LangCodes
 import net.gtransagent.translator.base.SingleInputTranslator
 import okhttp3.*
@@ -27,29 +31,32 @@ class OllamaTranslator : SingleInputTranslator() {
     private val disableHtmlEscapingGson = GsonBuilder().disableHtmlEscaping().setPrettyPrinting().create()
 
     val DEFAULT_SYSTEM_PROMPTS = """
-        You are a professional translator proficient in {{srcLang}} and {{targetLang}}. Strictly follow these rules:
-        1. Translate the given text from {{srcLang}} to fluent, natural {{targetLang}}.
-        2. Prioritize exact terminology replacements from the provided vocabulary list (format: "english_term": "chinese_term").
-        3. Term matching is case-{{glossarySensitive}} by default.
-        4. Never add explanations, pinyin, or non-translation content.
-        5. Maintain original formatting (e.g., line breaks, punctuation).
+        You are a professional translator to {{targetLang}}.
+        Source text is from OCR and may have minor errors—infer the intended meaning.
+        Produce only the {{targetLang}} translation, no explanations or commentary.
+        Keep abbreviations, codes, and identifiers as-is.
+        Maintain original formatting (e.g., line breaks, punctuation).
     """.trimIndent()
 
     val DEFAULT_USER_PROMPTS = """
-        Translate this {{srcLang}} text to {{targetLang}}:
-  
-        {{original}}
-  
-        Vocabulary list:
+        Vocabulary (case-{{glossarySensitive}}):
         {{glossaryList}}
-  
-        Respond ONLY with the final translation.
+
+        Translate to {{targetLang}}:
+        {{original}}
     """.trimIndent()
 
     private var systemPrompts = DEFAULT_SYSTEM_PROMPTS
     private var userPrompts = DEFAULT_USER_PROMPTS
 
     private lateinit var url: String
+
+    /**
+     * Whether to pass surrounding input items as context when translating.
+     * When enabled, previous and next items in the same batch are included as context
+     * to help the LLM maintain translation consistency. Default is true.
+     */
+    private var enableContext: Boolean = true
 
     private var engineAndModelMap: MutableMap<String, String> = mutableMapOf()
     private var supportedEngines: MutableList<PublicConfig.TranslateEngine> = mutableListOf()
@@ -87,6 +94,7 @@ class OllamaTranslator : SingleInputTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        enableContext = (configs["enableContext"] as Boolean?) ?: true
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -113,7 +121,7 @@ class OllamaTranslator : SingleInputTranslator() {
             return false
         }
 
-        logger.info("OllamaTranslator init success, url: $url, concurrent: $mConcurrent, supportedEngines: $supportedEngines")
+        logger.info("OllamaTranslator init success, url: $url, concurrent: $mConcurrent, enableContext: $enableContext, supportedEngines: $supportedEngines")
         return true
     }
 
@@ -129,7 +137,11 @@ class OllamaTranslator : SingleInputTranslator() {
     }
 
     private fun formatPromptWords(
-        srcLangLangName: String, targetLangLangName: String, glossaryWords: List<Pair<String, String>>?, text: String
+        srcLangLangName: String,
+        targetLangLangName: String,
+        glossaryWords: List<Pair<String, String>>?,
+        glossaryIgnoreCase: Boolean,
+        text: String
     ): String {
         val glossaryListStr = if (glossaryWords.isNullOrEmpty()) {
             ""
@@ -140,9 +152,128 @@ class OllamaTranslator : SingleInputTranslator() {
         }
         val promptWords = userPrompts.replace("{{targetLang}}", LangCodes.langNameUppercase(targetLangLangName))
             .replace("{{srcLang}}", LangCodes.langNameUppercase(srcLangLangName))
-            .replace("{{glossaryList}}", glossaryListStr).replace("{{original}}", text)
+            .replace("{{glossaryList}}", glossaryListStr)
+            .replace("{{glossarySensitive}}", if (glossaryIgnoreCase) "insensitive" else "sensitive")
+            .replace("{{original}}", text)
 
         return promptWords
+    }
+
+    /**
+     * Override translate to inject surrounding items as context for each input when enableContext is true.
+     * When enableContext is enabled, collects all input texts from the batch and builds
+     * prev/next context for each item using AiTransContext.
+     */
+    override fun translate(
+        requestId: String,
+        targetLang: String,
+        engineCode: String,
+        isAutoTrans: Boolean,
+        langItems: List<LangItem>,
+        sourceLang: String,
+        isSourceLanguageUserSetToAuto: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String,
+        callback: (
+            requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
+        ) -> Unit
+    ) {
+        if (!enableContext) {
+            // Delegate to parent SingleInputTranslator when context is disabled
+            super.translate(
+                requestId, targetLang, engineCode, isAutoTrans, langItems, sourceLang,
+                isSourceLanguageUserSetToAuto, previousTranslationInputs, customPrompt, callback
+            )
+            return
+        }
+
+        if (getSupportedEngines().none { x -> x.code == engineCode }) {
+            logger.error("${getName()} translate failed, engineCode is invalid: $engineCode")
+            callback(requestId, true, emptyList(), Status.INVALID_ARGUMENT)
+            return
+        }
+
+        if (!isSupported(targetLang)) {
+            logger.error("${getName()} translate failed, targetLang:$targetLang is not supported")
+            callback(requestId, true, emptyList(), Status.UNIMPLEMENTED)
+            return
+        }
+
+        // Collect all input texts in order for context building
+        data class ItemInfo(
+            val srcLang: String,
+            val inputItem: net.gtransagent.grpc.InputItem,
+            val indexInAll: Int
+        )
+
+        val allInputTexts = mutableListOf<String>()
+        val itemInfoList = mutableListOf<ItemInfo>()
+
+        langItems.forEach { langItem ->
+            val srcLang = langItem.inputLang
+            langItem.inputItemListList.forEach { inputItem ->
+                val idx = allInputTexts.size
+                allInputTexts.add(inputItem.input)
+                itemInfoList.add(ItemInfo(srcLang, inputItem, idx))
+            }
+        }
+
+        val count = itemInfoList.size
+        logger.info("${getName()} translate $requestId, count: $count, enableContext: true")
+
+        val transFinished = java.util.concurrent.atomic.AtomicInteger(0)
+
+        itemInfoList.forEach { info ->
+            executor.submit {
+                val inputItem = info.inputItem
+                val itemId = inputItem.id
+                val inputString = inputItem.input
+                val glossaryIgnoreCase = inputItem.glossaryIgnoreCase
+                val glossaryWords = inputItem.glossaryListList?.map {
+                    Pair(it.srcWords, it.targetWords)
+                }
+
+                // Build neighbor context from surrounding items in the batch
+                val prevContext = AiTransContext.buildContext(info.indexInAll, allInputTexts, true)
+                val nextContext = AiTransContext.buildContext(info.indexInAll, allInputTexts, false)
+
+                // Combine neighbor context with previousTranslationInputs
+                val combinedContext = mutableListOf<String>()
+                if (previousTranslationInputs.isNotEmpty()) {
+                    combinedContext.addAll(previousTranslationInputs)
+                }
+                if (prevContext.isNotEmpty()) {
+                    combinedContext.addAll(prevContext)
+                }
+                if (nextContext.isNotEmpty()) {
+                    combinedContext.addAll(nextContext)
+                }
+
+                try {
+                    val result = sendRequest(
+                        requestId, info.srcLang, targetLang, inputString, engineCode,
+                        glossaryWords, glossaryIgnoreCase, combinedContext, customPrompt
+                    )
+                    val finished = transFinished.incrementAndGet()
+                    callback(
+                        requestId, finished >= count, listOf(
+                            ResultItem.newBuilder().setId(itemId).setResult(result).build()
+                        ), null
+                    )
+                } catch (e: Exception) {
+                    logger.error("${getName()} translate failed, error: $e")
+                    val status = if (e is StatusRuntimeException) {
+                        e.status
+                    } else {
+                        Status.INTERNAL
+                    }
+                    val finished = transFinished.incrementAndGet()
+                    callback(
+                        requestId, finished >= count, emptyList(), status
+                    )
+                }
+            }
+        }
     }
 
     /**
@@ -174,7 +305,9 @@ class OllamaTranslator : SingleInputTranslator() {
         input: String,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): String {
         try {
             val systemMap = mutableMapOf(
@@ -184,12 +317,24 @@ class OllamaTranslator : SingleInputTranslator() {
             val srcLangName = LangCodes.langCodeToName(sourceLang)
             val targetLangName = LangCodes.langCodeToName(targetLang)
 
-            systemMap["content"] = formatSystemPromptWords(
+            // Build system prompt, append custom prompt if provided
+            var systemContent = formatSystemPromptWords(
                 srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase
             )
+            if (customPrompt.isNotBlank()) {
+                systemContent += "\n$customPrompt"
+            }
+            if (previousTranslationInputs.isNotEmpty()) {
+                systemContent += "\nPrevious translations for context (DO NOT translate, for reference only):\n${
+                    previousTranslationInputs.joinToString(
+                        "\n"
+                    )
+                }"
+            }
+            systemMap["content"] = systemContent
 
             val promptWords = formatPromptWords(
-                srcLangName, targetLangName, glossaryWords, input
+                srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase, input
             )
 
             val messagesMap = mutableMapOf(

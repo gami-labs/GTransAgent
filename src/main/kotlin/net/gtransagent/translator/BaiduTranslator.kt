@@ -108,7 +108,9 @@ class BaiduTranslator : LanguageGroupedTranslator() {
         inputs: List<String>,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         logger.debug("Baidu translateTexts start, requestId:$requestId, source:${sourceLang}, target:${targetLang}, inputs:${inputs}")
 

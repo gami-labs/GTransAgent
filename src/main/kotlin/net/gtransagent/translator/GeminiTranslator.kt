@@ -39,7 +39,7 @@ class GeminiTranslator : LanguageGroupedTranslator() {
     """.trimIndent()
 
     val DEFAULT_USER_PROMPTS = """
-        Translate JSON entries from {{srcLang}} to {{targetLang}}:
+        Translate JSON entries to {{targetLang}}:
         
         Input Format:
         [{"id":1,"text":"Source Text"}]
@@ -199,21 +199,30 @@ class GeminiTranslator : LanguageGroupedTranslator() {
         inputs: List<String>,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         try {
             val srcLangName = LangCodes.langCodeToName(sourceLang)
             val targetLangName = LangCodes.langCodeToName(targetLang)
 
+            // Build system instruction, append custom prompt if provided
+            var systemContent = formatSystemPromptWords(
+                srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase
+            )
+            if (customPrompt.isNotBlank()) {
+                systemContent += "\n$customPrompt"
+            }
+            if (previousTranslationInputs.isNotEmpty()) {
+                systemContent += "\nPrevious translations for context (DO NOT translate, for reference only):\n${previousTranslationInputs.joinToString("\n")}"
+            }
+
             val systemMap = mutableMapOf<String, Any>(
                 Pair(
                     "parts", listOf(
                         mapOf(
-                            Pair(
-                                "text", formatSystemPromptWords(
-                                    srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase
-                                )
-                            )
+                            Pair("text", systemContent)
                         )
                     )
                 )
@@ -224,20 +233,15 @@ class GeminiTranslator : LanguageGroupedTranslator() {
             val promptWords = formatPromptWords(
                 srcLangName, targetLangName, glossaryWords, glossaryIgnoreCase, inputStr
             )
-            val contentsMap = mutableMapOf<String, Any>(
-                Pair(
-                    "parts", listOf(
-                        mapOf(
-                            Pair(
-                                "text", promptWords
-                            )
-                        )
-                    )
-                )
-            )
+
+            val contentsList = mutableListOf<Map<String, Any>>()
+            contentsList.add(mapOf(
+                "role" to "user",
+                "parts" to listOf(mapOf("text" to promptWords))
+            ))
 
             val jsonMap = mutableMapOf<String, Any>(
-                Pair("system_instruction", systemMap), Pair("contents", contentsMap)
+                Pair("system_instruction", systemMap), Pair("contents", contentsList)
             )
 
             jsonMap["generationConfig"] = mapOf(Pair("response_mime_type", "application/json"))

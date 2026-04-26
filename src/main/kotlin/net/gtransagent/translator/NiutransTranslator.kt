@@ -101,7 +101,9 @@ class NiutransTranslator : LanguageGroupedTranslator() {
         inputs: List<String>,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         if (USE_V2_API) {
             return translateTextV2Api(

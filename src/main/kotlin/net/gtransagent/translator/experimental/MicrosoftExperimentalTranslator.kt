@@ -152,7 +152,9 @@ class MicrosoftExperimentalTranslator : SingleInputTranslator() {
         input: String,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): String {
         try {
             logger.debug("Microsoft Experimental translateTexts start, requestId:$requestId, target:${targetLang}, input:${input}")

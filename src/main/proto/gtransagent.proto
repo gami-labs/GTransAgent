@@ -81,6 +81,8 @@ message TranslateRequest {
   // When the user selects "auto" as the source language during translation, sourceLang is set to the language automatically detected based on the content; when a specific language is selected as the source language, sourceLang is set to that language.
   string sourceLang = 6; // source language, e.g. zh_Hans, en
   bool isSourceLanguageUserSetToAuto = 7; // true if user selects "auto" as the source language
+  repeated string previousTranslationInputs = 8; // previous translation inputs, encrypted, needed when using as context, may be empty
+  string customPrompt = 9; // custom prompt content, encrypted, may be empty
 }
 
 message ResultItem {

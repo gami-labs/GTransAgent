@@ -162,7 +162,9 @@ class DeepLTranslator : FullBatchTranslator() {
         sourceLang: String?,
         isSourceLanguageUserSetToAuto: Boolean, // true if user selects "auto" as the source language
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): List<String> {
         logger.debug("Deepl translateTexts start, target:${targetLang}, input:${input}")
         val begin = System.currentTimeMillis()

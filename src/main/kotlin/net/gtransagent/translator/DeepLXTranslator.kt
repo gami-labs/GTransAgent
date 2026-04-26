@@ -156,7 +156,9 @@ class DeepLXTranslator : SingleInputTranslator() {
         input: String,
         engineCode: String,
         glossaryWords: List<Pair<String, String>>?,
-        glossaryIgnoreCase: Boolean
+        glossaryIgnoreCase: Boolean,
+        previousTranslationInputs: List<String>,
+        customPrompt: String
     ): String {
         if (!isSupported(sourceLang)) {
             logger.error("${getName()} translate failed, sourceLang:$sourceLang is not supported")

@@ -134,7 +134,9 @@ abstract class TranslatorTest {
                 langItems,
                 sourceLang = srcLang,
                 isSourceLanguageUserSetToAuto = false,
-                fun(
+                previousTranslationInputs = emptyList(),
+                customPrompt = "",
+                callback = fun(
                     requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
                 ) {
                     val resultStr = resultItems.joinToString(",") {
@@ -194,7 +196,9 @@ abstract class TranslatorTest {
                 langItems,
                 sourceLang = "en",
                 isSourceLanguageUserSetToAuto = true,
-                fun(
+                previousTranslationInputs = emptyList(),
+                customPrompt = "",
+                callback = fun(
                     requestId: String, isAllItemTransFinished: Boolean, resultItems: List<ResultItem>, status: Status?
                 ) {
                     val resultStr = resultItems.joinToString(",") {
