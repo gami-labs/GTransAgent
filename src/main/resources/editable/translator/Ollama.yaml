@@ -28,6 +28,9 @@ engineMapping:
 
 concurrent: 3  # Number of concurrent requests
 
+# Whether to enable thinking mode in models that support it.
+enableThinking: false
+
 # Whether to pass surrounding input items as context during translation.
 # When enabled, previous and next items in the same batch are included as context
 # to help the LLM maintain translation consistency.

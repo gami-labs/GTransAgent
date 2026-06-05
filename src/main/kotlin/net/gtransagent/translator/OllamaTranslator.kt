@@ -58,6 +58,11 @@ class OllamaTranslator : SingleInputTranslator() {
      */
     private var enableContext: Boolean = true
 
+    /**
+     * Whether to enable thinking mode in models that support it.
+     */
+    private var enableThinking: Boolean = false
+
     private var engineAndModelMap: MutableMap<String, String> = mutableMapOf()
     private var supportedEngines: MutableList<PublicConfig.TranslateEngine> = mutableListOf()
 
@@ -95,6 +100,7 @@ class OllamaTranslator : SingleInputTranslator() {
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
         enableContext = (configs["enableContext"] as Boolean?) ?: true
+        enableThinking = (configs["enableThinking"] as Boolean?) ?: false
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -348,6 +354,7 @@ class OllamaTranslator : SingleInputTranslator() {
             jsonMap["model"] = engineAndModelMap[engineCode]!!
             jsonMap["stream"] = false
             jsonMap["keep_alive"] = "30m"
+            jsonMap["think"] = enableThinking
 
             val payload = disableHtmlEscapingGson.toJson(jsonMap)
 
