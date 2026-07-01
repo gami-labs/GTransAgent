@@ -77,6 +77,14 @@ class XAITranslator : LanguageGroupedTranslator() {
 
     private lateinit var apiKey: String
 
+    /**
+     * Tri-state thinking-mode switch. null = unset (do not send any parameter, keep model default);
+     * false = minimize reasoning (reasoning_effort = "low") to speed up responses; true = keep model default.
+     * Only valid for reasoning models (e.g. grok-3-mini); sending it to a non-reasoning model
+     * (e.g. grok-4-fast-non-reasoning) causes the API to return a 400 error, so leave it unset for those.
+     */
+    private var enableThinking: Boolean? = null
+
     override fun getName(): String {
         return NAME
     }
@@ -119,6 +127,8 @@ class XAITranslator : LanguageGroupedTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        // Read the optional thinking-mode switch; absent key leaves it null (no parameter sent).
+        enableThinking = configs["enableThinking"] as Boolean?
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -242,6 +252,11 @@ class XAITranslator : LanguageGroupedTranslator() {
 
             jsonMap["response_format"] = mapOf(Pair("type", "json_object"))
             jsonMap["model"] = engineAndModelMap[engineCode]!!
+
+            // Minimize reasoning only when thinking is explicitly disabled (reasoning models only).
+            if (enableThinking == false) {
+                jsonMap["reasoning_effort"] = "low"
+            }
 
             val payload = disableHtmlEscapingGson.toJson(jsonMap)
 

@@ -38,6 +38,13 @@ engineMapping:
 ##
 
 concurrent: 3  # Number of concurrent requests
+
+# Thinking-mode switch (optional). Leave it commented out to keep the provider default.
+# Set to false to disable the model's thinking step for faster responses, or true to enable it.
+# Only effective for GLM-4.5+ models that support the "thinking" parameter; older models
+# (e.g. glm-4-plus, glm-4-flash) do not support it.
+# enableThinking: false
+
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
     1. Maintain strict ID-text correspondence

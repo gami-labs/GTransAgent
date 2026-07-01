@@ -76,6 +76,13 @@ class VolcengineArkTranslator : LanguageGroupedTranslator() {
 
     private lateinit var apiKey: String
 
+    /**
+     * Tri-state thinking-mode switch. null = unset (do not send any parameter, keep provider default);
+     * false = disable the model's thinking step to speed up responses; true = explicitly enable thinking.
+     * Only effective for Doubao models that support the "thinking" parameter.
+     */
+    private var enableThinking: Boolean? = null
+
     override fun getName(): String {
         return NAME
     }
@@ -118,6 +125,8 @@ class VolcengineArkTranslator : LanguageGroupedTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        // Read the optional thinking-mode switch; absent key leaves it null (no parameter sent).
+        enableThinking = configs["enableThinking"] as Boolean?
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -241,6 +250,11 @@ class VolcengineArkTranslator : LanguageGroupedTranslator() {
 
             jsonMap["response_format"] = mapOf(Pair("type", "json_object"))
             jsonMap["model"] = engineAndModelMap[engineCode]!!
+
+            // Toggle Doubao thinking mode only when explicitly configured.
+            if (enableThinking != null) {
+                jsonMap["thinking"] = mapOf(Pair("type", if (enableThinking!!) "enabled" else "disabled"))
+            }
 
             val payload = disableHtmlEscapingGson.toJson(jsonMap)
 

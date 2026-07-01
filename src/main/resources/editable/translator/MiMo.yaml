@@ -1,18 +1,20 @@
-# This file is used to configure the xAI translator
-# https://docs.x.ai/docs/resources/faq-api/accounts
+# This file is used to configure the Xiaomi MiMo translator (pay-as-you-go)
 
-# url is the URL of the OpenAI API
-url: https://api.x.ai/v1/chat/completions
-# or set XAI_API_KEY in environment.
+# url is the URL of the Xiaomi MiMo OpenAI-compatible API
+# https://mimo.mi.com/docs/zh-CN/quick-start/summary/first-api-call
+url: https://api.xiaomimimo.com/v1/chat/completions
+# or set MIMO_API_KEY in environment.
 apiKey:
 
+# all models can be found in the following link
+# https://mimo.mi.com/docs/zh-CN/quick-start/summary/models
 engineMapping:
-  grok-4-fast: # engineCode
-    name: Grok 4 Fast # engineName
-    model: grok-4-fast-non-reasoning # modelCode
-  grok-3-mini: # engineCode
-    name: Grok 3 Mini # engineName
-    model: grok-3-mini # modelCode
+  mimo-v2.5: # engineCode
+    name: MiMo V2.5 # engineName
+    model: mimo-v2.5 # modelCode, call API
+  mimo-v2.5-pro: # engineCode
+    name: MiMo V2.5 Pro # engineName
+    model: mimo-v2.5-pro # modelCode
 # you can add more engines here
 
 
@@ -34,11 +36,10 @@ engineMapping:
 
 concurrent: 3  # Number of concurrent requests
 
-# Thinking-mode switch (optional). Leave it commented out to keep the model default.
-# Set to false to minimize reasoning (reasoning_effort = "low") for faster responses.
-# Only valid for reasoning models (e.g. grok-3-mini). Sending it to a non-reasoning model
-# such as grok-4-fast-non-reasoning returns a 400 error, so keep it commented for those.
-# enableThinking: false
+# Deep-thinking switch (optional). Disabled by default for faster translation responses.
+# Set to true to enable the model's deep-thinking step. MiMo V2.5 series are hybrid-thinking
+# models controlled via the "thinking" parameter ({"type":"enabled"} / {"type":"disabled"}).
+enableThinking: false
 
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
@@ -53,13 +54,13 @@ userPrompts: |
 
     Input Format:
     [{"id":1,"text":"Source Text"}]
-    
+
     Output Format:
     {"translations":[{"id":1,"text":"Translated Text"}]}
-    
+
     Vocabulary (case-{{glossarySensitive}}):
     {{glossaryList}}
-    
+
     Instructions:
     1. Processing sequence:
       - Phase 1: Fix OCR errors (e.g., 1↔l, 0↔O, missing punctuation)
@@ -67,6 +68,6 @@ userPrompts: |
       - Phase 3: Ensure JSON-safe escaping for all outputs
     2. Preserve numerical values and technical codes unchanged
     3. Never add explanations or non-requested content
-    
+
     BEGIN INPUT:
     {{original}}

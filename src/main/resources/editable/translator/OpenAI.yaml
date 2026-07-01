@@ -12,6 +12,9 @@ engineMapping:
   gpt-4.1-nano: # engineCode
     name: Gpt 4.1 nano # engineName
     model: gpt-4.1-nano # modelCode
+  gpt-5.4-mini: # engineCode
+    name: Gpt 5.4 mini # engineName
+    model: gpt-5.4-mini # modelCode
 # you can add more engines here
 
 
@@ -32,6 +35,14 @@ engineMapping:
 ##
 
 concurrent: 3  # Number of concurrent requests
+
+# Thinking-mode switch (optional). Leave it commented out to keep the model default.
+# Set to false to minimize reasoning (reasoning_effort = "minimal") for faster responses.
+# Only valid for reasoning models (o-series / GPT-5). Sending it to a non-reasoning model
+# such as gpt-4o-mini / gpt-4.1-nano returns a 400 error, so keep it commented for those.
+
+# enableThinking: false
+
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
     1. Maintain strict ID-text correspondence

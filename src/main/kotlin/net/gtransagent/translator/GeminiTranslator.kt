@@ -76,6 +76,13 @@ class GeminiTranslator : LanguageGroupedTranslator() {
 
     private lateinit var apiKey: String
 
+    /**
+     * Tri-state thinking-mode switch. null = unset (do not send any parameter, keep provider default);
+     * false = disable thinking (thinkingBudget = 0) to speed up responses; true = dynamic thinking (thinkingBudget = -1).
+     * Only effective for Gemini 2.5 Flash models that allow disabling thinking.
+     */
+    private var enableThinking: Boolean? = null
+
     override fun getName(): String {
         return NAME
     }
@@ -118,6 +125,8 @@ class GeminiTranslator : LanguageGroupedTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        // Read the optional thinking-mode switch; absent key leaves it null (no parameter sent).
+        enableThinking = configs["enableThinking"] as Boolean?
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -244,7 +253,12 @@ class GeminiTranslator : LanguageGroupedTranslator() {
                 Pair("system_instruction", systemMap), Pair("contents", contentsList)
             )
 
-            jsonMap["generationConfig"] = mapOf(Pair("response_mime_type", "application/json"))
+            val generationConfig = mutableMapOf<String, Any>(Pair("response_mime_type", "application/json"))
+            // Toggle thinking only when explicitly configured: 0 disables, -1 lets the model decide.
+            if (enableThinking != null) {
+                generationConfig["thinkingConfig"] = mapOf(Pair("thinkingBudget", if (enableThinking!!) -1 else 0))
+            }
+            jsonMap["generationConfig"] = generationConfig
 
             jsonMap["safetySettings"] = listOf(
                 mapOf(

@@ -38,6 +38,13 @@ engineMapping:
 ##
 
 concurrent: 3  # Number of concurrent requests
+
+# Thinking-mode switch (optional). Leave it commented out to keep the provider default.
+# Set to false to disable the model's thinking step for faster responses, or true to enable it.
+# Only effective for Qwen hybrid-thinking models (e.g. qwen-plus, qwen-turbo) that support
+# the "enable_thinking" parameter. Note: hybrid models in non-streaming mode require false.
+# enableThinking: false
+
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
     1. Maintain strict ID-text correspondence

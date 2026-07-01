@@ -63,3 +63,5 @@ translatorDefines:
     classFile: net.gtransagent.translator.UnTsDeepLXTranslator
   - translatorCode: xAI
     classFile: net.gtransagent.translator.XAITranslator
+  - translatorCode: MiMo
+    classFile: net.gtransagent.translator.MiMoTranslator

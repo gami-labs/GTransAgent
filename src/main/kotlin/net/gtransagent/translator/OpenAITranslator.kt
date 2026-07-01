@@ -76,6 +76,14 @@ class OpenAITranslator : LanguageGroupedTranslator() {
 
     private lateinit var apiKey: String
 
+    /**
+     * Tri-state thinking-mode switch. null = unset (do not send any parameter, keep model default);
+     * false = minimize reasoning (reasoning_effort = "minimal") to speed up responses; true = keep model default.
+     * Only valid for reasoning models (o-series / GPT-5); sending it to a non-reasoning model (e.g. gpt-4o)
+     * causes the API to return a 400 error, so leave it unset unless the engine maps to a reasoning model.
+     */
+    private var enableThinking: Boolean? = null
+
     override fun getName(): String {
         return NAME
     }
@@ -118,6 +126,8 @@ class OpenAITranslator : LanguageGroupedTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        // Read the optional thinking-mode switch; absent key leaves it null (no parameter sent).
+        enableThinking = configs["enableThinking"] as Boolean?
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -241,6 +251,11 @@ class OpenAITranslator : LanguageGroupedTranslator() {
 
             jsonMap["response_format"] = mapOf(Pair("type", "json_object"))
             jsonMap["model"] = engineAndModelMap[engineCode]!!
+
+            // Minimize reasoning only when thinking is explicitly disabled (reasoning models only).
+            if (enableThinking == false) {
+                jsonMap["reasoning_effort"] = "minimal"
+            }
 
             val payload = disableHtmlEscapingGson.toJson(jsonMap)
 

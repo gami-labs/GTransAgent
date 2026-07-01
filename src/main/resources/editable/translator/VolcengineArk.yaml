@@ -42,6 +42,13 @@ engineMapping:
 ##
 
 concurrent: 3  # Number of concurrent requests
+
+# Thinking-mode switch (optional). Leave it commented out to keep the provider default.
+# Set to false to disable the model's thinking step for faster responses, or true to enable it.
+# Only effective for Doubao models that support the "thinking" parameter; non-thinking models
+# (e.g. doubao-1.5-lite, deepseek-v3) do not support it.
+# enableThinking: false
+
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
     1. Maintain strict ID-text correspondence
