@@ -9,12 +9,12 @@ apiKey:
 # all modes can find in the following link
 # https://api-docs.deepseek.com/
 engineMapping:
-  deepseek-chat: # engineCode
-    name: DeepSeek-V3 # engineName
-    model: deepseek-chat # Model ID, API parameters.
-#  deepseek-reasoner: # engineCode
-#    name: DeepSeek-R1 # engineName
-#    model: deepseek-reasoner # Model ID, API parameters.
+  deepseek-v4-flash: # engineCode
+    name: DeepSeek-V4-Flash # engineName
+    model: deepseek-v4-flash # Model ID, API parameters.
+  # deepseek-v4-pro: # engineCode
+  #   name: DeepSeek-V4-Pro # engineName
+  #   model: deepseek-v4-pro # Model ID, API parameters.
 # you can add more engines here
 
 
@@ -35,6 +35,15 @@ engineMapping:
 ##
 
 concurrent: 3  # Number of concurrent requests
+
+# Thinking-mode switch (optional). Default: thinking disabled.
+# Set to true to enable thinking mode for improved translation quality.
+# enableThinking: true
+
+# Reasoning intensity (optional). Only effective when thinking is enabled.
+# Default: "high". Set to "max" for strongest reasoning on complex tasks.
+# reasoningEffort: "max"
+
 systemPrompts: |
     You are a professional translation processor. Strictly follow:
     1. Maintain strict ID-text correspondence

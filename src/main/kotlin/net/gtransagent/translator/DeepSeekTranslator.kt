@@ -76,6 +76,20 @@ class DeepSeekTranslator : LanguageGroupedTranslator() {
 
     private lateinit var apiKey: String
 
+    /**
+     * Optional thinking-mode switch. null = not set in config.
+     * Default behavior: thinking disabled (always sends thinking: {type: "disabled"}).
+     * Set to true in config to enable the model's thinking step.
+     */
+    private var enableThinking: Boolean? = null
+
+    /**
+     * Reasoning intensity when thinking is enabled. null = default to "high".
+     * Valid values: "high" (default), "max" (strongest reasoning).
+     * Only effective when thinking is enabled.
+     */
+    private var reasoningEffort: String? = null
+
     override fun getName(): String {
         return NAME
     }
@@ -118,6 +132,11 @@ class DeepSeekTranslator : LanguageGroupedTranslator() {
         }
 
         mConcurrent = (configs["concurrent"] as Int?) ?: 1
+        val rawEnableThinking = configs["enableThinking"]
+        if (rawEnableThinking != null) {
+            enableThinking = rawEnableThinking as Boolean
+        }
+        reasoningEffort = configs["reasoningEffort"] as String?
         systemPrompts = ((configs["systemPrompts"] as String?) ?: DEFAULT_SYSTEM_PROMPTS).trim()
         userPrompts = ((configs["userPrompts"] as String?) ?: DEFAULT_USER_PROMPTS).trim()
 
@@ -242,6 +261,12 @@ class DeepSeekTranslator : LanguageGroupedTranslator() {
             jsonMap["stream"] = false
             jsonMap["response_format"] = mapOf(Pair("type", "json_object"))
             jsonMap["model"] = engineAndModelMap[engineCode]!!
+
+            val thinkEnabled = enableThinking ?: false
+            jsonMap["thinking"] = mapOf(Pair("type", if (thinkEnabled) "enabled" else "disabled"))
+            if (thinkEnabled && reasoningEffort != null) {
+                jsonMap["reasoning_effort"] = reasoningEffort!!
+            }
 
             val payload = disableHtmlEscapingGson.toJson(jsonMap)
 
